@@ -1,11 +1,3 @@
-# Install package from CRAN if necessary, and load it
-install_load_package <- function(x) {
-  if (!require(x, character.only = TRUE)) {
-    install.packages(x, repos = "http://cran.us.r-project.org")
-  }
-  require(x, character.only = TRUE)
-}
-
 # Find in what specific plot and year a species was recorded
 find_plot_year <- function(x, y) {
   x |> 
