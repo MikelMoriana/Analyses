@@ -52,7 +52,7 @@ turfplot(community, "Gud_2_2") # The scans says Rum_ace. But neither of the spec
 find_plot_year(community, "Vio_can_cf") # Ulv_7_4
 turfplot(community, "Ulv_7_4") # Seems it is actually Vio_bif
 
-community_clean_cf <- community |> 
+community_cf <- community |> 
   mutate(species = ifelse(species == "Agr_cap_cf", "Agr_cap", species)) |> 
   mutate(species = ifelse(species == "Car_cap_cf" & plotID == "Gud_4_3", "Car_fla", species)) |> 
   mutate(species = ifelse(species == "Car_cap_cf", "Car_cap", species)) |> 
@@ -64,7 +64,7 @@ community_clean_cf <- community |>
   filter(!(species == "Ran_acr" & plotID == "Gud_2_2")) |> 
   mutate(species = ifelse(species == "Vio_can_cf", "Vio_bif", species))
   
-# For some individuals the species is unknown (_sp)----
+# For some individuals we know the genus but not the species (_sp)----
 
 levels(as.factor(grep("_sp", community$species, value = TRUE)))
 # Alc_sp, Ant_sp, Car_sp, Epi_sp, Equ_sp, Eri_sp, Fes_sp, Gal_sp, Gen_sp, Hie_sp, Hyp_sp, Leo_sp, Oma_sp, Pyr_sp, Ran_sp, Rhi_sp, Sag_sp, Sal_sp, Sel_sp, Tar_sp, Tri_sp and Vio_sp
@@ -73,8 +73,37 @@ levels(as.factor(grep("_sp", community$species, value = TRUE)))
 find_plot_year(community, "Ant_sp") # Skj_6_3 in 2019
 turfplot(community, "Skj_6_3") # Not really possible to tell, I drop it
 
-find_plot_year(community, "Car_sp") # Skal se på den senere
-turfplot(community, "Skj_6_3")
+find_plot_year(community, "Car_sp") |> print(n = 41) # Many cases. I create a file only with Carex
+community_carex <- community |> filter(grepl("Car_", species))
+turfplot(community_carex, "Gud_1_2") # Seems it is Car_vag in 2018. In the other cases either the other species were already present in the subplot, or none appear any year, and then better to drop them
+turfplot(community_carex, "Gud_1_3") # Seems it is Car_vag in all cases. No duplicates
+turfplot(community_carex, "Gud_1_4") # Seems it is Car_vag in all cases. Duplicates with unique()
+turfplot(community_carex, "Gud_1_5") # Seems it is Car_vag in all cases. Duplicate with unique()
+turfplot(community_carex, "Gud_2_1") # Seems it is Car_big in all cases. Subplot1 must be removed
+turfplot(community_carex, "Gud_2_2") # Seems it is Car_big in all cases. Subplot17 is cf, must be removed
+turfplot(community_carex, "Gud_2_3") # Seems it is Car_big in all cases. Duplicates with unique()
+turfplot(community_carex, "Gud_2_4") # Seems it is Car_big in all cases. Duplicate with unique()
+turfplot(community_carex, "Gud_3_2") # Seems it is Car_big in 2018 and Car_vag in 2019. Duplicate with unique()
+turfplot(community_carex, "Gud_3_3") # Seems it is Car_big in all cases. No duplicates
+turfplot(community_carex, "Gud_3_5") # Seems it is Car_vag in all cases. No duplicates
+turfplot(community_carex, "Gud_4_1") # All other Carex already present in that subplot. I drop it
+turfplot(community_carex, "Gud_4_3") # All other Carex already present in those subplots. I drop them
+turfplot(community_carex, "Gud_4_4") # All other Carex already present in those subplots. I drop them
+turfplot(community_carex, "Gud_5_1") # Seems it is Car_cap (looking at the scan). No duplicates
+turfplot(community_carex, "Gud_5_2") # All other Carex already present in that subplot. I drop it
+turfplot(community_carex, "Gud_5_4") # Seems it is Car_big. No duplicate
+turfplot(community_carex, "Gud_5_5") # Seems it is Car_vag in all cases. No duplicates
+turfplot(community_carex, "Gud_7_2") # Car_big: 3, 12 (2018), 14, 16. Car_vag: 12 (2021), 21. Both: 8. Remove: 15, 35
+carex_double <- filter(community, species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8 & year == 2018) # Create a duplicate
+turfplot(community_carex, "Gud_7_3") # One Car_big (subplot 30). All other Carex in the other subplot
+turfplot(community_carex, "Gud_7_4") # Seems it is Car_big in all cases. Duplicate with unique()
+turfplot(community_carex, "Gud_7_6") # Car_vag: 1, 24, 31. Car_big: 5. Car_fla: 8. Remove: 2
+turfplot(community_carex, "Lav_2_2") # Seems it is Car_pil. No duplicates
+turfplot(community_carex, "Lav_4_3") # Seems it is Car_vag. Duplicate with unique()
+turfplot(community_carex, "Skj_5_3") # Seems it is Car_cap. No duplicates
+turfplot(community_carex, "Ulv_3_3") # It is probably Car_pal. No duplicates
+turfplot(community_carex, "Ulv_3_5") # It is probably Car_big. No duplicates
+turfplot(community_carex, "Ulv_6_3") # Not enough information to decide. I drop it
 
 find_plot_year(community, "Epi_sp") # Skj_2_5 and Gud_1_5 in 2018, Lav_5_3 and Skj_3_4 in 2021
 turfplot(community, "Skj_2_5") # Seems it is Epi_ana
@@ -166,10 +195,53 @@ filter(community, grepl("Tri", species) & species != "Tri_ces" & site == "Lavisd
 find_plot_year(community, "Vio_sp") # Ulv_1_5 in 2021
 turfplot(community, "Ulv_1_5") # It is probably Vio_bif
 
-community_clean_cf_sp <- community_clean_cf |> 
-  filter(community_clean_cf, species != "Ant_sp")
-  # Car_sp 
-  mutate(species = ifelse(species == "Epi_sp" & (plotID == "Skj_2_5" | plotID == "Lav_5_3"), "Epi_ana", species)) |> 
+community_cf_sp <- community_cf |> 
+  filter(species != "Ant_sp") |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_1_2" & year == 2018, "Car_vag", species)) |> 
+  filter(!(species == "Car_sp" & plotID == "Gud_1_2")) |>
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_1_3", "Car_vag", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_1_4", "Car_vag", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_1_5", "Car_vag", species)) |>
+  filter(!(species == "Car_sp" & plotID == "Gud_2_1" & subPlot == 1 & year == 2019)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_2_1", "Car_big", species)) |> 
+  filter(!(species == "Car_sp" & plotID == "Gud_2_2" & year == 2022 & subPlot == 17)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_2_2", "Car_big", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_2_3", "Car_big", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_2_4", "Car_big", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_3_2" & year == 2018, "Car_big", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_3_2" & year == 2019, "Car_vag", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_3_3", "Car_big", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_3_5", "Car_vag", species)) |> 
+  filter(!(species == "Car_sp" & plotID == "Gud_4_1")) |> 
+  filter(!(species == "Car_sp" & plotID == "Gud_4_3")) |> 
+  filter(!(species == "Car_sp" & plotID == "Gud_4_4")) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_5_1", "Car_cap", species)) |> 
+  filter(!(species == "Car_sp" & plotID == "Gud_5_2")) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_5_4", "Car_big", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_5_5", "Car_vag", species)) |> 
+  #Gud_7_2 Car_big: 3, 12 (2018), 14, 16. Car_vag: 12 (2021), 21. Both: 8. Remove: 15, 35
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot %in% c(3, 14, 16), "Car_big", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 12 & year == 2018, "Car_big", species)) |>
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 12 & year == 2021, "Car_vag", species)) |>
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 21, "Car_vag", species)) |>
+  filter(!(species == "Car_sp" & plotID == "Gud_7_2" & subPlot %in% c(15, 35))) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8, "Car_big", species)) |>
+  bind_rows(carex_double) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8, "Car_vag", species)) |>
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_3" & subPlot == 30, "Car_big", species)) |> 
+  filter(!(species == "Car_sp" & plotID == "Gud_7_3")) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_4", "Car_big", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_6" & subPlot %in% c(1, 24, 31), "Car_vag", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_6" & subPlot == 5, "Car_big", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_6" & subPlot == 8, "Car_fla", species)) |> 
+  filter(!(species == "Car_sp" & plotID == "Gud_7_6" & subPlot == 2)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Lav_2_2", "Car_pil", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Lav_4_3", "Car_vag", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Skj_5_3", "Car_cap", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Ulv_3_3", "Car_pal", species)) |> 
+  mutate(species = ifelse(species == "Car_sp" & plotID == "Ulv_3_5", "Car_big", species)) |> 
+  filter(!(species == "Car_sp" & plotID == "Ulv_6_3")) |> 
+  mutate(species = ifelse(species == "Epi_sp" & plotID %in% c("Skj_2_5", "Lav_5_3"), "Epi_ana", species)) |> 
   filter(!((plotID == "Gud_1_5" | plotID == "Skj_3_4") & species == "Epi_sp")) |> 
   mutate(value = ifelse(species == "Ver_alp" & plotID == "Skj_3_4" & year == 2021 & subPlot == 1, "1J", value)) |> 
   mutate(juvenile = ifelse(species == "Ver_alp" & plotID == "Skj_3_4" & year == 2021 & subPlot == 1, "TRUE", juvenile)) |> 
@@ -181,28 +253,60 @@ community_clean_cf_sp <- community_clean_cf |>
   mutate(species = ifelse(species == "Hyp_sp", "Hyp_mac", species)) |> 
   mutate(species = ifelse(species == "Leo_sp", "Leo_aut", species)) |> 
   mutate(species = ifelse(species == "Oma_sp", "Oma_sup", species)) |>
-  mutate(species = ifelse((species == "Pyr_min" | species == "Pyr_rot"), "Pyr_sp", species))
+  mutate(species = ifelse(species %in% c("Pyr_min", "Pyr_rot"), "Pyr_sp", species)) |> 
   mutate(species = ifelse(species == "Ran_sp", "Ran_pyg", species)) |> 
   mutate(species = ifelse(species == "Rhi_sp", "Rhi_min", species)) |> 
   mutate(species = ifelse(species == "Sag_sp", "Sag_sag", species)) |> 
-  filter(!((plotID == "Lav_2_2" | plotID == "Lav_3_3") & species == "Sal_sp")) |> 
-  mutate(species = ifelse(species == "Sal_sp" & plotID == "Gud_5_1", "Sal_lan", species))
+  filter(!(plotID %in% c("Lav_2_2", "Lav_3_3") & species == "Sal_sp")) |> 
+  mutate(species = ifelse(species == "Sal_sp" & plotID == "Gud_5_1", "Sal_lan", species)) |> 
   mutate(species = ifelse(species == "Sel_sp", "Sel_sel", species)) |>
   mutate(species = ifelse(species == "Tri_sp", "Tri_pra", species)) |> 
   filter(!species == "Vio_sp") |> 
-  mutate(value = ifelse(plotID == "Ulv_1_5" & year = 2021 & (subPlot == 24 | subPlot == 29) & species == "Vio_bif", "1s", value)) |> 
-  mutate(seedling = ifelse(plotID == "Ulv_1_5" & year = 2021 & (subPlot == 24 | subPlot == 29) & species == "Vio_bif", "TRUE", seedling))
+  mutate(value = ifelse(species == "Vio_bif" & plotID == "Ulv_1_5" & year == 2021 & subPlot %in% c(24, 29), "1s", value)) |> 
+  mutate(seedling = ifelse(species == "Vio_bif" & plotID == "Ulv_1_5" & year == 2021 & subPlot %in% c(24, 29), "TRUE", seedling))
 
 # For some individuals we do not know the species----
-  
-  #mutate(species = ifelse(species == "Ver_cha", "Ver_alp", species)) |> 
-  filter(!(species == "Nid_juvenile" | species == "Nid_seedling" | species == "Unknown" | species == "Poaceae_sp" | species == "Ver_cha_eller_Hyp_mac")) #earlier found Ver_off in the plot, but not same subplots. However, creeping stems?))
 
-# Fixed according to what I wrote in the email: _cf, Car_sp, Epi_sp, Gen_sp, Hyp_sp, Leo_sp, Oma_sp, Ran_sp, Rhi_sp, Sag_sp, Sel_sp, Vio_sp, Nid_juvenile, Nid_seedling, Unknown, Poaceae_sp, Ver_cha_eller_Hyp_mac
-# I keep Alc_sp, Eri_sp, Pyr_sp, Tar_sp
+find_plot_year(community, "Ver_cha_eller_Hyp_mac") # Skj_2_1 in 2023
+turfplot(community, "Skj_2_1") # After some discussion we have agreed this is Hyp_mac
 
-# Other errors:
-# 2021 Lav_2_2 (Kari) Ant_alp is actually Alc_alp. The Tar_sp is wrong, has the values from Bis_viv, There is Ver_alp in subplot 1 - Cover 1
-# 2021 Lav_3_3 (Kari) Agr_cap in subplot 10. Car_big makes no sense either in the scan or in the file. Unknown is Suc vul, or something like that. Missing Car_nor_cf (which is Car_nor)
-# There is one case of Pyr_rot with flower, Gud_7_4 in 2018. In 2023 it was called Pyr_rot, the other years Pyr_sp. I still call all Pyrola Pyr_sp, but we can discuss
+find_plot_year(community, "Unknown") |> print(n = 21) # After looking at the scans, we might be able to fix: Lav_1_3, Lav_3_3 and Gud_5_5 in 2021. Cannot do anything about the rest
+turfplot(community, "Lav_1_3") # The scans says Van_atr, it is Val_atr
+turfplot(community, "Lav_3_3") # The scans says Suc_vul, it is Suc_pra
+turfplot(community, "Gud_5_5") # The scans says Fjelljamne, it is Dip_alp
+
+community_cf_sp_unknown <- community_cf_sp |> 
+  mutate(species = ifelse(species == "Ver_cha_eller_Hyp_mac", "Hyp_mac", species)) |> 
+  mutate(species = ifelse(species == "Unknown" & plotID == "Lav_1_3" & year == 2021, "Val_atr", species)) |> 
+  mutate(species = ifelse(species == "Unknown" & plotID == "Lav_3_3" & year == 2021, "Suc_pra", species)) |> 
+  mutate(species = ifelse(species == "Unknown" & plotID == "Gud_5_5" & year == 2021, "Dip_alp", species)) |> 
+  filter(!(species %in% c("Nid_juvenile", "Nid_seedling", "Poaceae_sp", "Unknown")))
+
+# We correct some last few errors----
+
+turfplot(community, "Lav_2_2") # There are a few mistakes in 2021: Ant_alp is actually Alc_alp, the values of Tar_sp belong to Bis_viv, Ver_alp is missing in subplot 1
+tar_sp_lav_2_2_2021 <- community_cf_sp_unknown |> 
+  filter(plotID == "Lav_2_2" & year == 2021 & subPlot %in% c(8, 10, 19, 20, 26, 32, 33) & value == 1) |> 
+  mutate(functional_group = "Forbs") |> 
+  mutate(species = "Tar_sp") |> 
+  unique()
+# Since all values for Tar_sp are 1, we can create a tibble from the original one, choosing the correct subplots and changing the functional group and species
+ver_alp_lav_2_2_2021 <- community_cf_sp_unknown |> 
+  filter(plotID == "Lav_2_2" & year == 2021 & subPlot == 1 & functional_group == "Forbs" & value == 1) |> 
+  mutate(species = "Ver_alp") |> 
+  unique()
+
+turfplot(community, "Lav_3_3") # There are a few mistakes in 2021: Agr_cap missing in subplot 10, 
+agr_cap_lav_3_3_2021 <- community_cf_sp_unknown |> 
+  filter(plotID == "Lav_3_3" & year == 2021 & subPlot == 10 & functional_group == "Graminoids" & value == 1) |> 
+  mutate(species = "Agr_cap")
+
+community_clean <- community_cf_sp_unknown |> 
+  mutate(species = ifelse(species == "Ant_alp" & plotID == "Lav_2_2", "Alc_alp", species)) |> 
+  filter(!(species == "Tar_sp" & plotID == "Lav_2_2" & year == 2021)) |> 
+  bind_rows(tar_sp_lav_2_2_2021) |> 
+  bind_rows(ver_alp_lav_2_2_2021) |> 
+  bind_rows(agr_cap_lav_3_3_2021)
+
+# There is one case of Pyr_rot with flower, Gud_7_4 in 2018. In 2023 it was called Pyr_rot, the other years Pyr_sp. I still call all Pyrola, Pyr_sp, but we can discuss
 
