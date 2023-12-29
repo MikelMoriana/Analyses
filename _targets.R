@@ -2,11 +2,12 @@
 
 # Load packages required to define the pipeline:
 library(targets)
+# library(tarchetypes) # Load other packages as needed.
 
 # Set target options:
 tar_option_set(
   packages = c("tidyverse", "turfmapper", "pipebind"), 
-  formate = "rds"
+  format = "rds"
 )
 
 # Run the R scripts in the R/ folder with your custom functions:

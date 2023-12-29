@@ -309,4 +309,3 @@ community_clean <- community_cf_sp_unknown |>
   bind_rows(agr_cap_lav_3_3_2021)
 
 # There is one case of Pyr_rot with flower, Gud_7_4 in 2018. In 2023 it was called Pyr_rot, the other years Pyr_sp. I still call all Pyrola, Pyr_sp, but we can discuss
-
