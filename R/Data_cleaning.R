@@ -23,13 +23,13 @@ grid <- make_grid(ncol = 7, nrow = 5) # We create the 5x7 grid for the turfmappe
 
 # Some individuals were a bit uncertain (suffix _cf in the file)----
 
-levels(as.factor(grep("_cf", community$species, value = TRUE)))
+levels(as.factor(grep("_cf$", community$species, value = TRUE)))
 # Agr_cap_cf, Car_cap_cf, Car_nig_cf, Car_nor_cf, Epi_ana_cf, Ran_acr_cf and Vio_can_cf
 
-find_plot_year(community, "Agr_cap_cf") # Lav_5_2 and Lav_4_1 in 2021, Gud_7_3 in 2023
-turfplot(community, "Lav_5_2") # Seems it is indeed Agr_cap
-turfplot(community, "Lav_4_1") # Seems it is indeed Agr_cap
+find_plot_year(community, "Agr_cap_cf") # Lav_4_1 and Lav_5_2 in 2021, Gud_7_3 in 2023
 turfplot(community, "Gud_7_3") # Seems it is indeed Agr_cap
+turfplot(community, "Lav_4_1") # Seems it is indeed Agr_cap
+turfplot(community, "Lav_5_2") # Seems it is indeed Agr_cap
 
 find_plot_year(community, "Car_cap_cf") # Gud_4_3 and Gud_4_4 in 2021, Gud_6_3 in 2023
 turfplot(community, "Gud_4_3") # Seems it is actually Car_fla
@@ -106,13 +106,13 @@ turfplot(community_carex, "Ulv_3_5") # It is probably Car_big. No duplicates
 turfplot(community_carex, "Ulv_6_3") # Not enough information to decide. I drop it
 
 find_plot_year(community, "Epi_sp") # Skj_2_5 and Gud_1_5 in 2018, Lav_5_3 and Skj_3_4 in 2021
-turfplot(community, "Skj_2_5") # Seems it is Epi_ana
-turfplot(community, "Lav_5_3") # It is Epi_ana
 turfplot(community, "Gud_1_5")
 filter(community, grepl("Epi_",species) & grepl("Gud_1", plotID)) |> select(plotID, year, species)
+turfplot(community, "Lav_5_3") # It is Epi_ana
+turfplot(community, "Skj_2_5") # Seems it is Epi_ana
 turfplot(community, "Skj_3_4")
 filter(community, grepl("Epi_",species) & grepl("Skj_3", plotID)) |> select(plotID, year, species) |> print(n = 32)
-# The last two are difficult to tell. But small Epilobium can be confounded with Veronica alpina. In both cases Ver_alp is found within the same subplot, so we remove them and edit the values of Ver_alp (if needed)
+# Gud_1_5 and Skj_3_4 are difficult to tell. But small Epilobium can be confounded with Veronica alpina. In both cases Ver_alp is found within the same subplot, so we remove them and edit the values of Ver_alp (if needed)
 
 find_plot_year(community, "Equ_sp") # Skj_5_2 in 2021
 # I have checked the scan, this is actually Eup_sp, there was a typo
@@ -123,18 +123,18 @@ turfplot(community, "Skj_1_4")
 filter(community, grepl("Eri_", species)) |> select(plotID, year, species) # We do not have enough information, we keep it as Eri_sp
 
 find_plot_year(community, "Fes_sp") # Ulv_1_4 in 2018, Gud_3_5 and Skj_2_6 in 2023
-turfplot(community, "Ulv_1_4") # It is not Fes_rub
-filter(community, species == "Fes_ovi" & grepl("Ulv_", plotID)) # It is probably Fes_ovi
-filter(community, species == "Fes_viv" & grepl("Ulv_", plotID))
 turfplot(community, "Gud_3_5") # Seems it is Fes_rub
 turfplot(community, "Skj_2_6") # Difficult to tell
 filter(community, grepl("Fes_", species) & grepl("Skj_2", plotID)) |> select(plotID, year, species) # It is probably Fes_rub
+turfplot(community, "Ulv_1_4") # It is not Fes_rub
+filter(community, species == "Fes_ovi" & grepl("Ulv_", plotID)) # It is probably Fes_ovi
+filter(community, species == "Fes_viv" & grepl("Ulv_", plotID))
 
 find_plot_year(community, "Gal_sp") # Ulv_5_5 and Gud_3_6 in 2022, Gud_3_6 and Gud_6_4 in 2023
-turfplot(community, "Ulv_5_5") # Seems it is Gal_bor
 turfplot(community, "Gud_3_6") # Difficult to tell
 turfplot(community, "Gud_6_4") # Difficult to tell
 filter(community, site == "Gudmedalen" & grepl("Gal_", species)) |> select(plotID, year, species) # We do not have enough information, we keep all in Gudmedalen as Gal_sp
+turfplot(community, "Ulv_5_5") # Seems it is Gal_bor
 
 find_plot_year(community, "Gen_sp") # Gud_7_3 in 2019
 turfplot(community, "Gud_7_3") # Seems it is Gen_niv
@@ -142,18 +142,17 @@ turfplot(community, "Gud_7_3") # Seems it is Gen_niv
 find_plot_year(community, "Hie_sp") # Gud_4_3 in 2018; Gud_4_3, Gud_7_6, Ulv_1_4, Ulv_1_3 and Ulv_6_3 in 2019; Gud_4_1, Gud_4_3 and Ulv_6_4 in 2021; Skj_2_5 in 2022; Gud_7_3 in 2023
 turfplot(community, "Gud_4_1") # Difficult to tell
 turfplot(community, "Gud_4_3") # Difficult to tell
-filter(community, grepl("Gud_4", plotID) & grepl("Hie", species) & species != "Hie_sp") |> select(plotID, year, species) # Seems they might be Hie_pil, but only found in 2018
+filter(community, grepl("Hie", species) & grepl("Gud_4", plotID)) |> select(plotID, year, species) # Seems they might be Hie_pil, but only found in 2018
 turfplot(community, "Gud_7_3") # Difficult to tell
 turfplot(community, "Gud_7_6") # Difficult to tell
-filter(community, grepl("Gud_", plotID) & grepl("Hie", species) & species != "Hie_sp") |> select(plotID, year, species) |> print(n = 44) # Not possible to say
+filter(community, grepl("Hie", species) & species != "Hie_sp" & grepl("Gud_", plotID)) |> select(plotID, year, species) |> print(n = 44) # Not possible to say
 turfplot(community, "Skj_2_5") # Difficult to tell
-filter(community, grepl("Skj_", plotID) & grepl("Hie", species)) |> select(plotID, year, species) |> print(n = 33) # Not possible to say
-turfplot(community, "Ulv_1_3")
-turfplot(community, "Ulv_1_4")
-filter(community, grepl("Ulv_", plotID) & grepl("Hie", species)) |> select(plotID, year, species) |> print(n = 27) # Not possible to say
+filter(community, grepl("Hie", species) & grepl("Skj_", plotID)) |> select(plotID, year, species) |> print(n = 33) # Not possible to say
+turfplot(community, "Ulv_1_3") # Difficult to tell
+turfplot(community, "Ulv_1_4") # Difficult to tell
 turfplot(community, "Ulv_6_3") # Difficult to tell
 turfplot(community, "Ulv_6_4") # Difficult to tell
-filter(community, grepl("Ulv_", plotID) & grepl("Hie", species)) |> select(plotID, year, species) |> print(n = 27) # Not possible to say
+filter(community, grepl("Hie", species) & grepl("Ulv_", plotID)) |> select(plotID, year, species) |> print(n = 27) # Not possible to say
 # It is best to keep it as _sp rather than remove it
 
 find_plot_year(community, "Hyp_sp") # Skj_3_3 in 2021
@@ -180,9 +179,9 @@ find_plot_year(community, "Sag_sp") # Skj_4_1 in 2021
 turfplot(community, "Skj_4_1") # Seems it is Sag_sag
 
 find_plot_year(community, "Sal_sp") # Lav_2_2, Lav_3_3 and Gud_5_1 in 2021
+turfplot(community, "Gud_5_1") # Seems it is Sal_lan
 turfplot(community, "Lav_2_2") # Sal_sp does not exist in the scan. The values are not from another species
 turfplot(community, "Lav_3_3") # Sal_sp does not exist in the scan. The values are not from another species
-turfplot(community, "Gud_5_1") # Seems it is Sal_lan
 
 find_plot_year(community, "Sel_sp") # Skj_6_4 in 2019
 turfplot(community, "Skj_6_4") # Difficult to tell
@@ -242,7 +241,7 @@ community_cf_sp <- community_cf |>
   mutate(species = ifelse(species == "Car_sp" & plotID == "Ulv_3_5", "Car_big", species)) |> 
   filter(!(species == "Car_sp" & plotID == "Ulv_6_3")) |> 
   mutate(species = ifelse(species == "Epi_sp" & plotID %in% c("Skj_2_5", "Lav_5_3"), "Epi_ana", species)) |> 
-  filter(!((plotID == "Gud_1_5" | plotID == "Skj_3_4") & species == "Epi_sp")) |> 
+  filter(!(plotID %in% c("Gud_1_5", "Skj_3_4") & species == "Epi_sp")) |> 
   mutate(value = ifelse(species == "Ver_alp" & plotID == "Skj_3_4" & year == 2021 & subPlot == 1, "1J", value)) |> 
   mutate(juvenile = ifelse(species == "Ver_alp" & plotID == "Skj_3_4" & year == 2021 & subPlot == 1, "TRUE", juvenile)) |> 
   mutate(species = ifelse(species == "Equ_sp", "Eup_wet", species)) |> 
@@ -285,18 +284,18 @@ community_cf_sp_unknown <- community_cf_sp |>
 # We correct some last few errors----
 
 turfplot(community, "Lav_2_2") # There are a few mistakes in 2021: Ant_alp is actually Alc_alp, the values of Tar_sp belong to Bis_viv, Ver_alp is missing in subplot 1
+# Since all values for Tar_sp are 1, we can create a tibble from the original one, choosing the correct subplots and changing the functional group and species
 tar_sp_lav_2_2_2021 <- community_cf_sp_unknown |> 
   filter(plotID == "Lav_2_2" & year == 2021 & subPlot %in% c(8, 10, 19, 20, 26, 32, 33) & value == 1) |> 
   mutate(functional_group = "Forbs") |> 
   mutate(species = "Tar_sp") |> 
   unique()
-# Since all values for Tar_sp are 1, we can create a tibble from the original one, choosing the correct subplots and changing the functional group and species
 ver_alp_lav_2_2_2021 <- community_cf_sp_unknown |> 
   filter(plotID == "Lav_2_2" & year == 2021 & subPlot == 1 & functional_group == "Forbs" & value == 1) |> 
   mutate(species = "Ver_alp") |> 
   unique()
 
-turfplot(community, "Lav_3_3") # There are a few mistakes in 2021: Agr_cap missing in subplot 10, 
+turfplot(community, "Lav_3_3") # Agr_cap missing in subplot 10
 agr_cap_lav_3_3_2021 <- community_cf_sp_unknown |> 
   filter(plotID == "Lav_3_3" & year == 2021 & subPlot == 10 & functional_group == "Graminoids" & value == 1) |> 
   mutate(species = "Agr_cap")
