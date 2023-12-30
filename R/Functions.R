@@ -7,7 +7,7 @@ find_plot_year <- function(x, y) {
 }
 
 # We adjust the make_turf_function from turfmapper to include fertility instead of cover
-make_turf_plot_fertile <- function (data, grid_long, species, fertile, year, subturf, title) {
+make_turf_plot_fertile <- function (data, grid_long, year, subturf, species, fertile, title) {
   data <- rename(data,
                  subturf = {{subturf}},
                  species = {{species}},
@@ -35,8 +35,8 @@ turfplot <- function(x, y) {
   bind(x,
        make_turf_plot_fertile(
          data = x, 
-         year = year, species = species, fertile = fertile, subturf = subPlot,
-         title = glue::glue("Site {x$site}: plot {x$plotID}"),
-         grid_long = grid
+         grid_long = grid, 
+         year = year, species = species, subturf = subPlot, fertile = fertile,
+         title = glue::glue("Site {x$site}: plot {x$plotID}")
        ))
 }
