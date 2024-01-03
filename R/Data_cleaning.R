@@ -95,7 +95,7 @@ turfplot(community_carex, "Gud_5_2") # All other Carex already present in that s
 turfplot(community_carex, "Gud_5_4") # Seems it is Car_big. No duplicate
 turfplot(community_carex, "Gud_5_5") # Seems it is Car_vag in all cases. No duplicates
 turfplot(community_carex, "Gud_7_2") # Car_big: 3, 12 (2018), 14, 16. Car_vag: 12 (2021), 21. Both: 8. Remove: 15, 35
-carex_double <- filter(community, species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8 & year == 2018) # Create a duplicate
+carex_double <- filter(community_cf, species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8 & year == 2018) # Create a duplicate
 turfplot(community_carex, "Gud_7_3") # One Car_big (subplot 30). All other Carex in the other subplot
 turfplot(community_carex, "Gud_7_4") # Seems it is Car_big in all cases. Duplicate with unique()
 turfplot(community_carex, "Gud_7_6") # Car_vag: 1, 24, 31. Car_big: 5. Car_fla: 8. Remove: 2
