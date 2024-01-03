@@ -131,392 +131,392 @@ list(
   # For some individuals we know the genus but not the species (_sp)----
   tar_target(
     name = levels_sp, # We find how many genera had the suffix _sp
-    command = levels(as.factor(grep("_sp$", community$species, value = TRUE))) # Alc_sp, Ant_sp, Car_sp, Epi_sp, Equ_sp, Eri_sp, Fes_sp, Gal_sp, Gen_sp, Hie_sp, Hyp_sp, Leo_sp, Oma_sp, Pyr_sp, Ran_sp, Rhi_sp, Sag_sp, Sal_sp, Sel_sp, Tar_sp, Tri_sp and Vio_sp
+    command = levels(as.factor(grep("_sp$", community_cf$species, value = TRUE))) # Alc_sp, Ant_sp, Car_sp, Epi_sp, Equ_sp, Eri_sp, Fes_sp, Gal_sp, Gen_sp, Hie_sp, Hyp_sp, Leo_sp, Oma_sp, Pyr_sp, Ran_sp, Rhi_sp, Sag_sp, Sal_sp, Sel_sp, Tar_sp, Tri_sp and Vio_sp
     # Alc_sp and Tar_sp are species by themselves, we keep them. We check the rest
   ),
   tar_target(
     name = plot_year_Ant_sp,
-    command = find_plot_year(community, "Ant_sp") # Skj_6_3 in 2019
+    command = find_plot_year(community_cf, "Ant_sp") # Skj_6_3 in 2019
   ),
   tar_target(
     name = turfplot_Skj_6_3,
-    command = turfplot(community, "Skj_6_3") # Not really possible to tell, I drop it
+    command = turfplot(community_cf, "Skj_6_3") # Not really possible to tell, I drop it
   ),
   tar_target(
     name = plot_year_Car_sp,
-    command = find_plot_year(community, "Car_sp") # Many cases. I create a file only with Carex
+    command = find_plot_year(community_cf, "Car_sp") # Many cases. I create a file only with Carex
   ),
   tar_target(
     name = community_carex,
-    command = community |> filter(grepl("Car_", species))
+    command = community_cf |> filter(grepl("Car_", species))
   ),
   tar_target(
     name = turfplot_Gud_1_2_car,
-    command = turfplot(community_carex, "Gud_1_2") # Seems it is Car_vag in 2018. In the other cases either the other species were already present in the subplot, or none appear any year, and then better to drop them
+    command = turfplot(community_cf_carex, "Gud_1_2") # Seems it is Car_vag in 2018. In the other cases either the other species were already present in the subplot, or none appear any year, and then better to drop them
   ),
   tar_target(
     name = turfplot_Gud_1_3_car,
-    command = turfplot(community_carex, "Gud_1_3") # Seems it is Car_vag in all cases. No duplicates
+    command = turfplot(community_cf_carex, "Gud_1_3") # Seems it is Car_vag in all cases. No duplicates
   ),
   tar_target(
     name = turfplot_Gud_1_4_car,
-    command = turfplot(community_carex, "Gud_1_4") # Seems it is Car_vag in all cases. Duplicates with unique()
+    command = turfplot(community_cf_carex, "Gud_1_4") # Seems it is Car_vag in all cases. Duplicates with unique()
   ),
   tar_target(
     name = turfplot_Gud_1_5_car,
-    command = turfplot(community_carex, "Gud_1_5") # Seems it is Car_vag in all cases. Duplicate with unique()
+    command = turfplot(community_cf_carex, "Gud_1_5") # Seems it is Car_vag in all cases. Duplicate with unique()
   ),
   tar_target(
     name = turfplot_Gud_2_1_car,
-    command = turfplot(community_carex, "Gud_2_1") # Seems it is Car_big in all cases. Subplot1 must be removed
+    command = turfplot(community_cf_carex, "Gud_2_1") # Seems it is Car_big in all cases. Subplot1 must be removed
   ),
   tar_target(
     name = turfplot_Gud_2_2_car,
-    command = turfplot(community_carex, "Gud_2_2") # Seems it is Car_big in all cases. Subplot17 is cf, must be removed
+    command = turfplot(community_cf_carex, "Gud_2_2") # Seems it is Car_big in all cases. Subplot17 is cf, must be removed
   ),
   tar_target(
     name = turfplot_Gud_2_3_car,
-    command = turfplot(community_carex, "Gud_2_3") # Seems it is Car_big in all cases. Duplicates with unique()
+    command = turfplot(community_cf_carex, "Gud_2_3") # Seems it is Car_big in all cases. Duplicates with unique()
   ),
   tar_target(
     name = turfplot_Gud_2_4_car,
-    command = turfplot(community_carex, "Gud_2_4") # Seems it is Car_big in all cases. Duplicate with unique()
+    command = turfplot(community_cf_carex, "Gud_2_4") # Seems it is Car_big in all cases. Duplicate with unique()
   ),
   tar_target(
     name = turfplot_Gud_3_2_car,
-    command = turfplot(community_carex, "Gud_3_2") # Seems it is Car_big in 2018 and Car_vag in 2019. Duplicate with unique()
+    command = turfplot(community_cf_carex, "Gud_3_2") # Seems it is Car_big in 2018 and Car_vag in 2019. Duplicate with unique()
   ),
   tar_target(
     name = turfplot_Gud_3_3_car,
-    command = turfplot(community_carex, "Gud_3_3") # Seems it is Car_big in all cases. No duplicates
+    command = turfplot(community_cf_carex, "Gud_3_3") # Seems it is Car_big in all cases. No duplicates
   ),
   tar_target(
     name = turfplot_Gud_3_5_car,
-    command = turfplot(community_carex, "Gud_3_5") # Seems it is Car_vag in all cases. No duplicates
+    command = turfplot(community_cf_carex, "Gud_3_5") # Seems it is Car_vag in all cases. No duplicates
   ),
   tar_target(
     name = turfplot_Gud_4_1_car,
-    command = turfplot(community_carex, "Gud_4_1") # All other Carex already present in that subplot. I drop it
+    command = turfplot(community_cf_carex, "Gud_4_1") # All other Carex already present in that subplot. I drop it
   ),
   tar_target(
     name = turfplot_Gud_4_3_car,
-    command = turfplot(community_carex, "Gud_4_3") # All other Carex already present in those subplots. I drop them
+    command = turfplot(community_cf_carex, "Gud_4_3") # All other Carex already present in those subplots. I drop them
   ),
   tar_target(
     name = turfplot_Gud_4_4_car,
-    command = turfplot(community_carex, "Gud_4_4") # All other Carex already present in those subplots. I drop them
+    command = turfplot(community_cf_carex, "Gud_4_4") # All other Carex already present in those subplots. I drop them
   ),
   tar_target(
     name = turfplot_Gud_5_1_car,
-    command = turfplot(community_carex, "Gud_5_1") # Seems it is Car_cap (looking at the scan). No duplicates
+    command = turfplot(community_cf_carex, "Gud_5_1") # Seems it is Car_cap (looking at the scan). No duplicates
   ),
   tar_target(
     name = turfplot_Gud_5_2_car,
-    command = turfplot(community_carex, "Gud_5_2") # All other Carex already present in that subplot. I drop it
+    command = turfplot(community_cf_carex, "Gud_5_2") # All other Carex already present in that subplot. I drop it
   ),
   tar_target(
     name = turfplot_Gud_5_4_car,
-    command = turfplot(community_carex, "Gud_5_4") # Seems it is Car_big. No duplicate
+    command = turfplot(community_cf_carex, "Gud_5_4") # Seems it is Car_big. No duplicate
   ),
   tar_target(
     name = turfplot_Gud_5_5_car,
-    command = turfplot(community_carex, "Gud_5_5") # Seems it is Car_vag in all cases. No duplicates
+    command = turfplot(community_cf_carex, "Gud_5_5") # Seems it is Car_vag in all cases. No duplicates
   ),
   tar_target(
     name = turfplot_Gud_7_2_car,
-    command = turfplot(community_carex, "Gud_7_2") # Car_big: 3, 12 (2018), 14, 16. Car_vag: 12 (2021), 21. Both: 8. Remove: 15, 35
+    command = turfplot(community_cf_carex, "Gud_7_2") # Car_big: 3, 12 (2018), 14, 16. Car_vag: 12 (2021), 21. Both: 8. Remove: 15, 35
   ),
   tar_target(
     name = carex_double, # Create a duplicate, since it seems both Car_big and Car_vag are present in subplot 8 in 2018
-    command = filter(community, species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8 & year == 2018)
+    command = filter(community_cf, species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8 & year == 2018)
   ),
   tar_target(
     name = turfplot_Gud_7_3_car,
-    command = turfplot(community_carex, "Gud_7_3") # One Car_big (subplot 30). All other Carex in the other subplot
+    command = turfplot(community_cf_carex, "Gud_7_3") # One Car_big (subplot 30). All other Carex in the other subplot
   ),
   tar_target(
     name = turfplot_Gud_7_4_car,
-    command = turfplot(community_carex, "Gud_7_4") # Seems it is Car_big in all cases. Duplicate with unique()
+    command = turfplot(community_cf_carex, "Gud_7_4") # Seems it is Car_big in all cases. Duplicate with unique()
   ),
   tar_target(
     name = turfplot_Gud_7_6_car,
-    command = turfplot(community_carex, "Gud_7_6") # Car_vag: 1, 24, 31. Car_big: 5. Car_fla: 8. Remove: 2
+    command = turfplot(community_cf_carex, "Gud_7_6") # Car_vag: 1, 24, 31. Car_big: 5. Car_fla: 8. Remove: 2
   ),
   tar_target(
     name = turfplot_Lav_2_2_car,
-    command = turfplot(community_carex, "Lav_2_2") # Seems it is Car_pil. No duplicates
+    command = turfplot(community_cf_carex, "Lav_2_2") # Seems it is Car_pil. No duplicates
   ),
   tar_target(
     name = turfplot_Lav_4_3_car,
-    command = turfplot(community_carex, "Lav_4_3") # Seems it is Car_vag. Duplicate with unique()
+    command = turfplot(community_cf_carex, "Lav_4_3") # Seems it is Car_vag. Duplicate with unique()
   ),
   tar_target(
     name = turfplot_Skj_5_3_car,
-    command = turfplot(community_carex, "Skj_5_3") # Seems it is Car_cap. No duplicates
+    command = turfplot(community_cf_carex, "Skj_5_3") # Seems it is Car_cap. No duplicates
   ),
   tar_target(
     name = turfplot_Ulv_3_3_car,
-    command = turfplot(community_carex, "Ulv_3_3") # It is probably Car_pal. No duplicates
+    command = turfplot(community_cf_carex, "Ulv_3_3") # It is probably Car_pal. No duplicates
   ),
   tar_target(
     name = turfplot_Ulv_3_5_car,
-    command = turfplot(community_carex, "Ulv_3_5") # It is probably Car_big. No duplicates
+    command = turfplot(community_cf_carex, "Ulv_3_5") # It is probably Car_big. No duplicates
   ),
   tar_target(
     name = turfplot_Ulv_6_3_car,
-    command = turfplot(community_carex, "Ulv_6_3") # Not enough information to decide. I drop it
+    command = turfplot(community_cf_carex, "Ulv_6_3") # Not enough information to decide. I drop it
   ),
   tar_target(
     name = plot_year_Epi_sp,
-    command = find_plot_year(community, "Epi_sp") # Skj_2_5 and Gud_1_5 in 2018, Lav_5_3 and Skj_3_4 in 2021
+    command = find_plot_year(community_cf, "Epi_sp") # Skj_2_5 and Gud_1_5 in 2018, Lav_5_3 and Skj_3_4 in 2021
   ),
   tar_target(
     name = turfplot_Gud_1_5,
-    command = turfplot(community, "Gud_1_5") # Not enough to tell, might be Ver_alp
+    command = turfplot(community_cf, "Gud_1_5") # Not enough to tell, might be Ver_alp
   ),
   tar_target(
     name = filtered_Epi_Gud_1,
-    command = filter(community, grepl("Epi_",species) & grepl("Gud_1", plotID)) # Still difficult to tell
+    command = filter(community_cf, grepl("Epi_",species) & grepl("Gud_1", plotID)) # Still difficult to tell
   ),
   tar_target(
     name = turfplot_Lav_5_3,
-    command = turfplot(community, "Lav_5_3") # It is Epi_ana
+    command = turfplot(community_cf, "Lav_5_3") # It is Epi_ana
   ),
   tar_target(
     name = turfplot_Skj_2_5,
-    command = turfplot(community, "Skj_2_5") # Seems it is Epi_ana
+    command = turfplot(community_cf, "Skj_2_5") # Seems it is Epi_ana
   ),
   tar_target(
     name = turfplot_Skj_3_4,
-    command = turfplot(community, "Skj_3_4") # Not enough to tell, might be Ver_alp
+    command = turfplot(community_cf, "Skj_3_4") # Not enough to tell, might be Ver_alp
   ),
   tar_target(
     name = filtered_Epi_Skj_3,
-    command = filter(community, grepl("Epi_",species) & grepl("Skj_3", plotID)) # Still difficult to tell
+    command = filter(community_cf, grepl("Epi_",species) & grepl("Skj_3", plotID)) # Still difficult to tell
   ), # Gud_1_5 and Skj_3_4 are difficult to tell. But small Epilobium can be confounded with Veronica alpina. In both cases Ver_alp is found within the same subplot, so we remove them and edit the values of Ver_alp (if needed)
   tar_target(
     name = plot_year_Equ_sp,
-    command = find_plot_year(community, "Equ_sp") # Skj_5_2 in 2021
+    command = find_plot_year(community_cf, "Equ_sp") # Skj_5_2 in 2021
   ),
   tar_target(
     name = turfplot_Skj_5_2,
-    command = turfplot(community, "Skj_5_2") # Checked the scan, this is actually Eup_sp, there was a typo. It is probably Eup_wet
+    command = turfplot(community_cf, "Skj_5_2") # Checked the scan, this is actually Eup_sp, there was a typo. It is probably Eup_wet
   ),
   tar_target(
     name = plot_year_Eri_sp,
-    command = find_plot_year(community, "Eri_sp") # Skj_1_4 in 2018 and 2021
+    command = find_plot_year(community_cf, "Eri_sp") # Skj_1_4 in 2018 and 2021
   ),
   tar_target(
     name = turfplot_Skj_1_4,
-    command = turfplot(community, "Skj_1_4") # Not enough to tell
+    command = turfplot(community_cf, "Skj_1_4") # Not enough to tell
   ),
   tar_target(
     name = filtered_Eri,
-    command = filter(community, grepl("Eri_", species)) # We do not have enough information, we keep it as Eri_sp
+    command = filter(community_cf, grepl("Eri_", species)) # We do not have enough information, we keep it as Eri_sp
   ),
   tar_target(
     name = plot_year_Fes_sp,
-    command = find_plot_year(community, "Fes_sp") # Ulv_1_4 in 2018, Gud_3_5 and Skj_2_6 in 2023
+    command = find_plot_year(community_cf, "Fes_sp") # Ulv_1_4 in 2018, Gud_3_5 and Skj_2_6 in 2023
   ),
   tar_target(
     name = turfplot_Gud_3_5,
-    command = turfplot(community, "Gud_3_5") # Seems it is Fes_rub
+    command = turfplot(community_cf, "Gud_3_5") # Seems it is Fes_rub
   ),
   tar_target(
     name = turfplot_Skj_2_6,
-    command = turfplot(community, "Skj_2_6") # Difficult to tell
+    command = turfplot(community_cf, "Skj_2_6") # Difficult to tell
   ),
   tar_target(
     name = filtered_Fes_Skj_2,
-    command = filter(community, grepl("Fes_", species) & grepl("Skj_2", plotID)) |> select(plotID, year, species) # It is probably Fes_rub
+    command = filter(community_cf, grepl("Fes_", species) & grepl("Skj_2", plotID)) |> select(plotID, year, species) # It is probably Fes_rub
   ),
   tar_target(
     name = turfplot_Ulv_1_4,
-    command = turfplot(community, "Ulv_1_4") # It is not Fes_rub
+    command = turfplot(community_cf, "Ulv_1_4") # It is not Fes_rub
   ),
   tar_target(
     name = filtered_Fes_ovi_UlV,
-    command = filter(community, species == "Fes_ovi" & grepl("Ulv_", plotID)) # It is probably Fes_ovi
+    command = filter(community_cf, species == "Fes_ovi" & grepl("Ulv_", plotID)) # It is probably Fes_ovi
   ),
   tar_target(
     name = filtered_Fes_viv_Ulv,
-    command = filter(community, species == "Fes_viv" & grepl("Ulv_", plotID))
+    command = filter(community_cf, species == "Fes_viv" & grepl("Ulv_", plotID))
   ),
   tar_target(
     name = plot_year_Gal_sp,
-    command = find_plot_year(community, "Gal_sp") # Ulv_5_5 and Gud_3_6 in 2022, Gud_3_6 and Gud_6_4 in 2023
+    command = find_plot_year(community_cf, "Gal_sp") # Ulv_5_5 and Gud_3_6 in 2022, Gud_3_6 and Gud_6_4 in 2023
   ),
   tar_target(
     name = turfplot_Gud_3_6,
-    command = turfplot(community, "Gud_3_6") # Difficult to tell
+    command = turfplot(community_cf, "Gud_3_6") # Difficult to tell
   ),
   tar_target(
     name = turfplot_Gud_6_4,
-    command = turfplot(community, "Gud_6_4") # Difficult to tell
+    command = turfplot(community_cf, "Gud_6_4") # Difficult to tell
   ),
   tar_target(
     name = filtered_Gal_Gud,
-    command = filter(community, grepl("Gal_", species) & grepl("Gud_", plotID)) # We do not have enough information, we keep all in Gudmedalen as Gal_sp
+    command = filter(community_cf, grepl("Gal_", species) & grepl("Gud_", plotID)) # We do not have enough information, we keep all in Gudmedalen as Gal_sp
   ),
   tar_target(
     name = turfplot_Ulv_5_5,
-    command = turfplot(community, "Ulv_5_5") # Seems it is Gal_bor
+    command = turfplot(community_cf, "Ulv_5_5") # Seems it is Gal_bor
   ),
   tar_target(
     name = plot_year_Gen_sp,
-    command = find_plot_year(community, "Gen_sp") # Gud_7_3 in 2019
+    command = find_plot_year(community_cf, "Gen_sp") # Gud_7_3 in 2019
   ),
   # We already have a turfplot for Gud_7_3 (from Agr_cap_cf). Seems it is Gen_niv for Gen_sp
   tar_target(
     name = plot_year_Hie_sp,
-    command = find_plot_year(community, "Hie_sp") # Gud_4_3 in 2018; Gud_4_3, Gud_7_6, Ulv_1_4, Ulv_1_3 and Ulv_6_3 in 2019; Gud_4_1, Gud_4_3 and Ulv_6_4 in 2021; Skj_2_5 in 2022; Gud_7_3 in 2023
+    command = find_plot_year(community_cf, "Hie_sp") # Gud_4_3 in 2018; Gud_4_3, Gud_7_6, Ulv_1_4, Ulv_1_3 and Ulv_6_3 in 2019; Gud_4_1, Gud_4_3 and Ulv_6_4 in 2021; Skj_2_5 in 2022; Gud_7_3 in 2023
   ),
   tar_target(
     name = turfplot_Gud_4_1,
-    command = turfplot(community, "Gud_4_1") # Difficult to tell
+    command = turfplot(community_cf, "Gud_4_1") # Difficult to tell
   ),
   # We already have a turfplot for Gud_4_3 (from Car_cap_cf). Difficult to tell for Hie_sp
   tar_target(
     name = filtered_Hie_Gud_4,
-    command = filter(community, grepl("Gud_4", plotID) & grepl("Hie", species)) # Seems it might be Hie_pil, but only found in 2018
+    command = filter(community_cf, grepl("Gud_4", plotID) & grepl("Hie", species)) # Seems it might be Hie_pil, but only found in 2018
   ),
   # We already have a turfplot for Gud_7_3 (from Agr_cap_cf). Difficult to tell for Hie_sp
   tar_target(
     name = turfplot_Gud_7_6,
-    command = turfplot(community, "Gud_7_6") # Difficult to tell
+    command = turfplot(community_cf, "Gud_7_6") # Difficult to tell
   ),
   tar_target(
     name = filtered_Hie_Gud,
-    command = filter(community, grepl("Hie", species) & grepl("Gud_", plotID) & species != "Hie_sp") # Not possible to say
+    command = filter(community_cf, grepl("Hie", species) & grepl("Gud_", plotID) & species != "Hie_sp") # Not possible to say
   ),
   # We already have a turfplot for Skj_2_5 (from Epi_sp). Difficult to tell for Hie_sp
   tar_target(
     name = filtered_Hie_Skj,
-    command = filter(community, grepl("Hie", species) & grepl("Skj_", plotID)) # Not possible to say
+    command = filter(community_cf, grepl("Hie", species) & grepl("Skj_", plotID)) # Not possible to say
   ),
   tar_target(
     name = turfplot_Ulv_1_3,
-    command = turfplot(community, "Ulv_1_3") # Difficult to tell
+    command = turfplot(community_cf, "Ulv_1_3") # Difficult to tell
   ),
   # We already have a turfplot for Ulv_1_4 (from Fes_sp). Difficult to tell for Hie_sp
   tar_target(
     name = turfplot_Ulv_6_3,
-    command = turfplot(community, "Ulv_6_3") # Difficult to tell
+    command = turfplot(community_cf, "Ulv_6_3") # Difficult to tell
   ),
   tar_target(
     name = turfplot_Ulv_6_4,
-    command = turfplot(community, "Ulv_6_4") # Difficult to tell
+    command = turfplot(community_cf, "Ulv_6_4") # Difficult to tell
   ),
   tar_target(
     name = filtered_Hie_Ulv,
-    command = filter(community, grepl("Hie", species) & grepl("Ulv_", plotID)) # Not possible to say
+    command = filter(community_cf, grepl("Hie", species) & grepl("Ulv_", plotID)) # Not possible to say
     # It is best to keep it as _sp rather than remove it
   ),
   tar_target(
     name = plot_year_Hyp_sp,
-    command = find_plot_year(community, "Hyp_sp") # Skj_3_3 in 2021
+    command = find_plot_year(community_cf, "Hyp_sp") # Skj_3_3 in 2021
   ),
   tar_target(
     name = turfplot_Skj_3_3,
-    command = turfplot(community, "Skj_3_3") # Seems it is Hyp_mac
+    command = turfplot(community_cf, "Skj_3_3") # Seems it is Hyp_mac
   ),
   tar_target(
     name = plot_year_Leo_sp,
-    command = find_plot_year(community, "Leo_sp") # Ulv_6_1 in 2021
+    command = find_plot_year(community_cf, "Leo_sp") # Ulv_6_1 in 2021
   ),
   tar_target(
     name = turfplot_Ulv_6_1,
-    command = turfplot(community, "Ulv_6_1") # Seems it is Leo_aut
+    command = turfplot(community_cf, "Ulv_6_1") # Seems it is Leo_aut
   ),
   tar_target(
     name = plot_year_Oma_sp,
-    command = find_plot_year(community, "Oma_sp") # Lav_7_1 in 2021 and Skj_7_1 in 2023
+    command = find_plot_year(community_cf, "Oma_sp") # Lav_7_1 in 2021 and Skj_7_1 in 2023
   ),
   tar_target(
     name = turfplot_Lav_7_1,
-    command = turfplot(community, "Lav_7_1") # Seems it is Oma_sup
+    command = turfplot(community_cf, "Lav_7_1") # Seems it is Oma_sup
   ),
   tar_target(
     name = turfplot_Skj_7_1,
-    command = turfplot(community, "Skj_7_1") # Might be Oma_sup
+    command = turfplot(community_cf, "Skj_7_1") # Might be Oma_sup
   ),
   tar_target(
     name = filtered_Oma_Skj_7,
-    command = filter(community, grepl("Oma_", species) & grepl("Skj_7", plotID)) # It is probably Oma_sup
+    command = filter(community_cf, grepl("Oma_", species) & grepl("Skj_7", plotID)) # It is probably Oma_sup
   ),
   tar_target(
     name = plot_year_Pyr_sp,
-    command = find_plot_year(community, "Pyr_rot") # Many cases. Since it is difficult to distinguish Pyr_min and Pyr_rot, we group all of them under the name Pyr_sp
+    command = find_plot_year(community_cf, "Pyr_rot") # Many cases. Since it is difficult to distinguish Pyr_min and Pyr_rot, we group all of them under the name Pyr_sp
   ),
   tar_target(
     name = plot_year_Ran_sp,
-    command = find_plot_year(community, "Ran_sp") # Lav_2_3 in 2018
+    command = find_plot_year(community_cf, "Ran_sp") # Lav_2_3 in 2018
   ),
   tar_target(
     name = turfplot_Lav_2_3,
-    command = turfplot(community, "Lav_2_3") # Seems it is Ran_pyg
+    command = turfplot(community_cf, "Lav_2_3") # Seems it is Ran_pyg
   ),
   tar_target(
     name = plot_year_Rhi_sp,
-    command = find_plot_year(community, "Rhi_sp") # Skj_1_4 in 2023
+    command = find_plot_year(community_cf, "Rhi_sp") # Skj_1_4 in 2023
   ),
   # We already have a turfplot for Skj_1_4 (from Eri_sp). Difficult to tell for Rhi_sp
   tar_target(
     name = filtered_Rhi_Skj_1,
-    command = filter(community, grepl("Rhi_", species) & grepl("Skj_1", plotID)) # It is probably Rhi_min
+    command = filter(community_cf, grepl("Rhi_", species) & grepl("Skj_1", plotID)) # It is probably Rhi_min
   ),
   tar_target(
     name = plot_year_Sag_sp,
-    command = find_plot_year(community, "Sag_sp") # Skj_4_1 in 2021
+    command = find_plot_year(community_cf, "Sag_sp") # Skj_4_1 in 2021
   ),
   tar_target(
     name = turfplot_Skj_4_1,
-    command = turfplot(community, "Skj_4_1") # Seems it is Sag_sag
+    command = turfplot(community_cf, "Skj_4_1") # Seems it is Sag_sag
   ),
   tar_target(
     name = plot_year_Sal_sp,
-    command = find_plot_year(community, "Sal_sp") # Lav_2_2, Lav_3_3 and Gud_5_1 in 2021
+    command = find_plot_year(community_cf, "Sal_sp") # Lav_2_2, Lav_3_3 and Gud_5_1 in 2021
   ),
   tar_target(
     name = turfplot_Gud_5_1,
-    command = turfplot(community, "Gud_5_1") # Seems it is Sal_lan
+    command = turfplot(community_cf, "Gud_5_1") # Seems it is Sal_lan
   ),
   tar_target(
     name = turfplot_Lav_2_2,
-    command = turfplot(community, "Lav_2_2") # Sal_sp does not exist in the scan. The values are not from another species
+    command = turfplot(community_cf, "Lav_2_2") # Sal_sp does not exist in the scan. The values are not from another species
   ),
   # We already have a turfplot for Lav_3_3 (from Car_nor_cf). Sal_sp does not exist in the scan. The values are not from another species. I remove it
   tar_target(
     name = plot_year_Sel_sp,
-    command = find_plot_year(community, "Sel_sp") # Skj_6_4 in 2019
+    command = find_plot_year(community_cf, "Sel_sp") # Skj_6_4 in 2019
   ),
   tar_target(
     name = turfplot_Skj_6_4,
-    command = turfplot(community, "Skj_6_4") # Difficult to tell
+    command = turfplot(community_cf, "Skj_6_4") # Difficult to tell
   ),
   tar_target(
     name = filtered_Sel_Skj_6,
-    command = filter(community, grepl("Sel_", species) & grepl("Skj_6", plotID)) # It is probably Sel_sel
+    command = filter(community_cf, grepl("Sel_", species) & grepl("Skj_6", plotID)) # It is probably Sel_sel
   ),
   tar_target(
     name = plot_year_Tri_sp,
-    command = find_plot_year(community, "Tri_sp") # Lav_2_5 in 2021
+    command = find_plot_year(community_cf, "Tri_sp") # Lav_2_5 in 2021
   ),
   tar_target(
     name = turfplot_Lav_2_5,
-    command = turfplot(community, "Lav_2_5") # Difficult to tell. The scan says Trifolium
+    command = turfplot(community_cf, "Lav_2_5") # Difficult to tell. The scan says Trifolium
   ),
   tar_target(
     name = filtered_Tri_Lav,
-    command = filter(community, grepl("Tri", species) & species != "Tri_ces" & grepl("Lav_", plotID)) # It could be Tri_pra
+    command = filter(community_cf, grepl("Tri", species) & species != "Tri_ces" & grepl("Lav_", plotID)) # It could be Tri_pra
   ),
   tar_target(
     name = plot_year_Vio_sp,
-    command = find_plot_year(community, "Vio_sp") # Ulv_1_5 in 2021
+    command = find_plot_year(community_cf, "Vio_sp") # Ulv_1_5 in 2021
   ),
   tar_target(
     name = turfplot_Ulv_1_5,
-    command = turfplot(community, "Ulv_1_5") # It is probably Vio_bif
+    command = turfplot(community_cf, "Ulv_1_5") # It is probably Vio_bif
   ),
   tar_target(
     name = community_cf_sp, # We clean the file accordingly
@@ -594,23 +594,23 @@ list(
   # For some individuals we do not know the species----
   tar_target(
     name = plot_year_Ver_cha_eller_Hyp_mac,
-    command = find_plot_year(community, "Ver_cha_eller_Hyp_mac") # Skj_2_1 in 2023
+    command = find_plot_year(community_cf_sp, "Ver_cha_eller_Hyp_mac") # Skj_2_1 in 2023
   ),
   tar_target(
     name = turfplot_Skj_2_1,
-    command = turfplot(community, "Skj_2_1") # After some discussion we have agreed this is Hyp_mac
+    command = turfplot(community_cf_sp, "Skj_2_1") # After some discussion we have agreed this is Hyp_mac
   ),
   tar_target(
     name = plot_year_Unknown,
-    command = find_plot_year(community, "Unknown") # After looking at the scans, we might be able to fix: Gud_5_5, Lav_1_3 and Lav_3_3 in 2021. Cannot do anything about the rest
+    command = find_plot_year(community_cf_sp, "Unknown") # After looking at the scans, we might be able to fix: Gud_5_5, Lav_1_3 and Lav_3_3 in 2021. Cannot do anything about the rest
   ),
   tar_target(
     name = turfplot_Gud_5_5,
-    command = turfplot(community, "Gud_5_5") # The scans says Fjelljamne, it is Dip_alp
+    command = turfplot(community_cf_sp, "Gud_5_5") # The scans says Fjelljamne, it is Dip_alp
   ),
   tar_target(
     name = turfplot_Lav_1_3,
-    command = turfplot(community, "Lav_1_3") # The scans says Van_atr, it is Val_atr
+    command = turfplot(community_cf_sp, "Lav_1_3") # The scans says Van_atr, it is Val_atr
   ),
   # We already have a turfplot for Lav_3_3 (from Car_nor_cf). The scans says Suc_vul, it is Suc_pra
   tar_target(
