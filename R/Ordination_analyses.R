@@ -1,3 +1,10 @@
+# Libraries and data files----
+
+library(tidyverse)
+library(vegan)
+
+community_clean <- targets::tar_read(community_clean)
+
 # We remove the columns we are not interested in, and make it wide format
 community_presence <- pivot_wider(
   community_clean,
@@ -13,6 +20,8 @@ community_species <- community_presence |>
 community_richness <- rowSums(community_species)
 community_info <- community_presence |> 
   select(site:logger)
+
+# We perform the ordination analysis----
 
 set.seed(811)
 nmds_community <- metaMDS(community_species, k=2, distance="jaccard", trymax = 1000)
