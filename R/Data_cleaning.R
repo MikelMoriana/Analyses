@@ -181,8 +181,8 @@ turfplot(community_cf, "Skj_4_1") # Seems it is Sag_sag
 
 find_plot_year(community_cf, "Sal_sp") # Lav_2_2, Lav_3_3 and Gud_5_1 in 2021
 turfplot(community_cf, "Gud_5_1") # Seems it is Sal_lan
-turfplot(community_cf, "Lav_2_2") # Sal_sp does not exist in the scan. The values are not from another species
-turfplot(community_cf, "Lav_3_3") # Sal_sp does not exist in the scan. The values are not from another species
+turfplot(community_cf, "Lav_2_2") # Sal_sp does not exist in the scan. The values are not from another species. I remove it
+turfplot(community_cf, "Lav_3_3") # Sal_sp does not exist in the scan. The values are not from another species. I remove it
 
 find_plot_year(community_cf, "Sel_sp") # Skj_6_4 in 2019
 turfplot(community_cf, "Skj_6_4") # Difficult to tell
