@@ -531,7 +531,8 @@ list(
       mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_1_5", "Car_vag", species)) |>
       filter(!(species == "Car_sp" & plotID == "Gud_2_1" & subPlot == 1 & year == 2019)) |> 
       mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_2_1", "Car_big", species)) |> 
-      filter(!(species == "Car_sp" & plotID == "Gud_2_2" & year == 2022 & subPlot == 17)) |> 
+      filter(!(species == "Car_big" & plotID == "Gud_2_2" & year == 2022 & subPlot == 17)) |> 
+      filter(!(species == "Car_sp" & plotID == "Gud_2_2" & year == 2023 & subPlot == 34)) |> 
       mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_2_2", "Car_big", species)) |> 
       mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_2_3", "Car_big", species)) |> 
       mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_2_4", "Car_big", species)) |> 
@@ -546,7 +547,6 @@ list(
       filter(!(species == "Car_sp" & plotID == "Gud_5_2")) |> 
       mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_5_4", "Car_big", species)) |> 
       mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_5_5", "Car_vag", species)) |> 
-      #Gud_7_2 Car_big: 3, 12 (2018), 14, 16. Car_vag: 12 (2021), 21. Both: 8. Remove: 15, 35
       mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot %in% c(3, 14, 16), "Car_big", species)) |> 
       mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 12 & year == 2018, "Car_big", species)) |>
       mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 12 & year == 2021, "Car_vag", species)) |>
@@ -569,7 +569,7 @@ list(
       mutate(species = ifelse(species == "Car_sp" & plotID == "Ulv_3_5", "Car_big", species)) |> 
       filter(!(species == "Car_sp" & plotID == "Ulv_6_3")) |> 
       mutate(species = ifelse(species == "Epi_sp" & plotID %in% c("Skj_2_5", "Lav_5_3"), "Epi_ana", species)) |> 
-      filter(!((plotID == "Gud_1_5" | plotID == "Skj_3_4") & species == "Epi_sp")) |> 
+      filter(!(plotID %in% c("Gud_1_5", "Skj_3_4") & species == "Epi_sp")) |> 
       mutate(value = ifelse(species == "Ver_alp" & plotID == "Skj_3_4" & year == 2021 & subPlot == 1, "1J", value)) |> 
       mutate(juvenile = ifelse(species == "Ver_alp" & plotID == "Skj_3_4" & year == 2021 & subPlot == 1, "TRUE", juvenile)) |> 
       mutate(species = ifelse(species == "Equ_sp", "Eup_wet", species)) |> 
