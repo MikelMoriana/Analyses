@@ -50,7 +50,7 @@ find_plot_year(community, "Ran_acr_cf") # Gud_2_2
 turfplot(community, "Gud_2_2") # The scans says Rum_ace. But neither of the species grow in this block. I remove it
 
 find_plot_year(community, "Vio_can_cf") # Ulv_7_4
-turfplot(community, "Ulv_7_4") # Seems it is actually Vio_bif
+turfplot(community, "Ulv_7_4") # Seems it is actually a juvenile Vio_bif
 
 community_cf <- community |> 
   mutate(species = ifelse(species == "Agr_cap_cf", "Agr_cap", species)) |> 
@@ -62,7 +62,9 @@ community_cf <- community |>
   mutate(species = ifelse(species == "Epi_ana_cf", "Epi_ana", species)) |> 
   filter(!(species == "Ran_acr_cf")) |> 
   filter(!(species == "Ran_acr" & plotID == "Gud_2_2")) |> 
-  mutate(species = ifelse(species == "Vio_can_cf", "Vio_bif", species)) |> 
+  filter(!(species == "Vio_can_cf" & plotID == "Ulv_7_4")) |> 
+  mutate(value = ifelse(species == "Vio_bif" & plotID == "Ulv_7_4" & subPlot == 30 & year == 2023, "1j", value)) |> 
+  mutate(juvenile = ifelse(species == "Vio_bif" & plotID == "Ulv_7_4" & subPlot == 30 & year == 2023, "TRUE", juvenile)) |> 
   unique()
   
 # For some individuals we know the genus but not the species (_sp)----
