@@ -6,7 +6,7 @@ library(targets)
 
 # Set target options:
 tar_option_set(
-  packages = c("tibble", "tidyverse", "turfmapper", "pipebind"), 
+  packages = c("tibble", "tidyverse"), 
   format = "rds"
 )
 
@@ -29,10 +29,6 @@ list(
     command = filter(community_all, !treatment == "R") # We are not interested in the removal plots for this study
   ),
   tar_target(
-    name = grid,
-    command = make_grid(ncol = 7, nrow = 5) # We create the 5x7 grid for the turfmapper
-  ),
-  tar_target(
     name = community_cf, # We clean the file accordingly
     command = community |> 
       mutate(species = ifelse(species == "Agr_cap_cf", "Agr_cap", species)) |> 
@@ -44,7 +40,8 @@ list(
       mutate(species = ifelse(species == "Epi_ana_cf", "Epi_ana", species)) |> 
       filter(!(species == "Ran_acr_cf")) |> 
       filter(!(species == "Ran_acr" & plotID == "Gud_2_2")) |> 
-      mutate(species = ifelse(species == "Vio_can_cf", "Vio_bif", species))
+      mutate(species = ifelse(species == "Vio_can_cf", "Vio_bif", species)) |> 
+      unique()
   ),
   tar_target(
     name = carex_double, # Create a duplicate, since it seems both Car_big and Car_vag are present in subplot 8 in 2018
@@ -120,7 +117,8 @@ list(
       mutate(species = ifelse(species == "Tri_sp", "Tri_pra", species)) |> 
       filter(!species == "Vio_sp") |> 
       mutate(value = ifelse(species == "Vio_bif" & plotID == "Ulv_1_5" & year == 2021 & subPlot %in% c(24, 29), "1s", value)) |> 
-      mutate(seedling = ifelse(species == "Vio_bif" & plotID == "Ulv_1_5" & year == 2021 & subPlot %in% c(24, 29), "TRUE", seedling))
+      mutate(seedling = ifelse(species == "Vio_bif" & plotID == "Ulv_1_5" & year == 2021 & subPlot %in% c(24, 29), "TRUE", seedling)) |> 
+      unique()
   ),
   tar_target(
     name = community_cf_sp_unknown,
@@ -129,7 +127,8 @@ list(
       mutate(species = ifelse(species == "Unknown" & plotID == "Lav_1_3" & year == 2021, "Val_atr", species)) |> 
       mutate(species = ifelse(species == "Unknown" & plotID == "Lav_3_3" & year == 2021, "Suc_pra", species)) |> 
       mutate(species = ifelse(species == "Unknown" & plotID == "Gud_5_5" & year == 2021, "Dip_alp", species)) |> 
-      filter(!(species %in% c("Nid_juvenile", "Nid_seedling", "Poaceae_sp", "Unknown")))
+      filter(!(species %in% c("Nid_juvenile", "Nid_seedling", "Poaceae_sp", "Unknown"))) |> 
+      unique()
   ),
   tar_target(
     name = tar_sp_lav_2_2_2021,
