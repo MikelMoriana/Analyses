@@ -62,7 +62,8 @@ community_cf <- community |>
   mutate(species = ifelse(species == "Epi_ana_cf", "Epi_ana", species)) |> 
   filter(!(species == "Ran_acr_cf")) |> 
   filter(!(species == "Ran_acr" & plotID == "Gud_2_2")) |> 
-  mutate(species = ifelse(species == "Vio_can_cf", "Vio_bif", species))
+  mutate(species = ifelse(species == "Vio_can_cf", "Vio_bif", species)) |> 
+  unique()
   
 # For some individuals we know the genus but not the species (_sp)----
 
@@ -262,7 +263,8 @@ community_cf_sp <- community_cf |>
   mutate(species = ifelse(species == "Tri_sp", "Tri_pra", species)) |> 
   filter(!species == "Vio_sp") |> 
   mutate(value = ifelse(species == "Vio_bif" & plotID == "Ulv_1_5" & year == 2021 & subPlot %in% c(24, 29), "1s", value)) |> 
-  mutate(seedling = ifelse(species == "Vio_bif" & plotID == "Ulv_1_5" & year == 2021 & subPlot %in% c(24, 29), "TRUE", seedling))
+  mutate(seedling = ifelse(species == "Vio_bif" & plotID == "Ulv_1_5" & year == 2021 & subPlot %in% c(24, 29), "TRUE", seedling)) |>
+  unique()
 
 # For some individuals we do not know the species----
 
@@ -279,7 +281,8 @@ community_cf_sp_unknown <- community_cf_sp |>
   mutate(species = ifelse(species == "Unknown" & plotID == "Lav_1_3" & year == 2021, "Val_atr", species)) |> 
   mutate(species = ifelse(species == "Unknown" & plotID == "Lav_3_3" & year == 2021, "Suc_pra", species)) |> 
   mutate(species = ifelse(species == "Unknown" & plotID == "Gud_5_5" & year == 2021, "Dip_alp", species)) |> 
-  filter(!(species %in% c("Nid_juvenile", "Nid_seedling", "Poaceae_sp", "Unknown")))
+  filter(!(species %in% c("Nid_juvenile", "Nid_seedling", "Poaceae_sp", "Unknown"))) |> 
+  unique()
 
 # We correct some last few errors----
 
