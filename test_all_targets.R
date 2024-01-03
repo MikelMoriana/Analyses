@@ -125,7 +125,9 @@ list(
       mutate(species = ifelse(species == "Epi_ana_cf", "Epi_ana", species)) |> 
       filter(!(species == "Ran_acr_cf")) |> 
       filter(!(species == "Ran_acr" & plotID == "Gud_2_2")) |> 
-      mutate(species = ifelse(species == "Vio_can_cf", "Vio_bif", species)) |> 
+      filter(!(species == "Vio_can_cf" & plotID == "Ulv_7_4")) |> 
+      mutate(value = ifelse(species == "Vio_bif" & plotID == "Ulv_7_4" & subPlot == 30 & year == 2023, "1j", value)) |> 
+      mutate(juvenile = ifelse(species == "Vio_bif" & plotID == "Ulv_7_4" & subPlot == 30 & year == 2023, "TRUE", juvenile)) |> 
       unique()
   ),
   # For some individuals we know the genus but not the species (_sp)----
