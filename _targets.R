@@ -45,7 +45,7 @@ list(
   ),
   tar_target(
     name = carex_double, # Create a duplicate, since it seems both Car_big and Car_vag are present in subplot 8 in 2018
-    command = filter(community, species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8 & year == 2018)
+    command = filter(community_cf, species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8 & year == 2018)
   ),
   tar_target(
     name = community_cf_sp, # We clean the file accordingly
