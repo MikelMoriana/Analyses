@@ -1,18 +1,18 @@
 # We remove the columns we are not interested in, and make it wide format
-community_wide <- pivot_wider(
-  community,
-  id_cols = c(site:moss_depth_mm),
+community_presence <- pivot_wider(
+  community_clean,
+  id_cols = c(site, plotID, warming, treatment, year, subPlot, moss, lichen, litter, rock, poo, fungus, bare_ground, logger),
   names_from = species,
   values_from = presence,
   names_sort = TRUE,
 )
 
-community_species <- community_wide |> 
-  select(matches("[A-Za-z]{3}_[A-Za-z]{3}$")) |> # We use only those species we are sure of
-  mutate(across(everything(), ~replace_na(.x, 0)))
+community_species <- community_presence |> 
+  select(Ach_mil:Vio_tri) |> # We choose only the species. Doublecheck that these are the first and last species in the tibble
+  mutate(across(everything(), ~replace_na(.x, 0))) # We need 0s instead of NAs
 community_richness <- rowSums(community_species)
-community_info <- community |> 
-  select(site, plotID, warming, treatment, subPlot, year)
+community_info <- community_presence |> 
+  select(site:logger)
 
 set.seed(811)
 nmds_community <- metaMDS(community_species, k=2, distance="jaccard", trymax = 1000)
