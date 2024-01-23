@@ -4,11 +4,13 @@ library(tidyverse)
 library(vegan)
 
 community_clean <- targets::tar_read(community_clean)
+community_4years <- community_clean |> 
+  filter(year != 2022) # In 2022 only the center subplots were studied
 
-gudmedalen <- community_clean |> filter(site == "Gudmedalen")
-lavisdalen <- community_clean |> filter(site == "Lavisdalen")
-skjellingahaugen <- community_clean |> filter(site == "Skjellingahaugen")
-ulvehaugen <- community_clean |> filter(site == "Ulvehaugen")
+gudmedalen <- community_4years |> filter(site == "Gudmedalen")
+lavisdalen <- community_4years |> filter(site == "Lavisdalen")
+skjellingahaugen <- community_4years |> filter(site == "Skjellingahaugen")
+ulvehaugen <- community_4years |> filter(site == "Ulvehaugen")
 
 # Gudmedalen----
 
