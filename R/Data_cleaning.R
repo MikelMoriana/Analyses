@@ -604,7 +604,7 @@ turfplot(community_carex, "Gud_5_2") # All other Carex already present in that s
 turfplot(community_carex, "Gud_5_4") # Seems it is Car_big. No duplicate
 turfplot(community_carex, "Gud_5_5") # Seems it is Car_vag in all cases. No duplicates
 turfplot(community_carex, "Gud_7_2") # Car_big: 3, 12 (2018), 14, 16. Car_vag: 12 (2021), 21. Both: 8. Remove: 15, 35
-carex_double <- filter(community_subplot_cf, species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8 & year == 2018) # Create a duplicate
+car_sp_gud_7_2_2018 <- filter(community_subplot_cf, species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8 & year == 2018) # Create a duplicate
 turfplot(community_carex, "Gud_7_3") # One Car_big (subplot 30). All other Carex in the other subplot
 turfplot(community_carex, "Gud_7_4") # Seems it is Car_big in all cases. Duplicate with unique()
 turfplot(community_carex, "Gud_7_6") # Car_vag: 1, 24, 31. Car_big: 5. Car_fla: 8. Remove: 2
@@ -763,7 +763,7 @@ community_subplot_cf_sp <- community_subplot_cf |>
   mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 21, "Car_vag", species)) |>
   filter(!(species == "Car_sp" & plotID == "Gud_7_2" & subPlot %in% c(15, 35))) |> 
   mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8, "Car_big", species)) |>
-  bind_rows(carex_double) |> 
+  bind_rows(car_sp_gud_7_2_2018) |> 
   mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_2" & subPlot == 8, "Car_vag", species)) |>
   mutate(species = ifelse(species == "Car_sp" & plotID == "Gud_7_3" & subPlot == 30, "Car_big", species)) |> 
   filter(!(species == "Car_sp" & plotID == "Gud_7_3")) |> 
