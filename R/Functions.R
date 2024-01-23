@@ -101,14 +101,14 @@ make_richness_plot <- function(data, grid_long, treatment, year, subturf, richne
 
 richnessplot <- function(x, y) {
   x |>
-    filter(site == y) |>
+    filter(plotID == y) |>
     bind(
       x,
       make_richness_plot(
         data = x,
         grid_long = grid,
         year = year, treatment = treatment, subturf = subPlot, richness = richness,
-        title = glue::glue("Site {x$site}: plot {x$site}")
+        title = glue::glue("{x$plotID} Warming: {x$warming}")
       )
     )
 }
