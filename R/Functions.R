@@ -45,7 +45,7 @@ make_turf_plot_fertile <- function(data, grid_long, year, subturf, species, fert
 turfplot <- function(x, y) {
   x |>
     filter(plotID == y) |>
-    bind(
+    pipebind::bind(
       x,
       make_turf_plot_fertile(
         data = x,
@@ -60,7 +60,7 @@ turfplot_year <- function(x, y, z) {
   x |>
     filter(plotID == y) |>
     filter(year == z) |> 
-    bind(
+    pipebind::bind(
       x,
       make_turf_plot_fertile(
         data = x,
@@ -102,7 +102,7 @@ make_richness_plot <- function(data, grid_long, treatment, year, subturf, richne
 richnessplot <- function(x, y) {
   x |>
     filter(plotID == y) |>
-    bind(
+    pipebind::bind(
       x,
       make_richness_plot(
         data = x,
@@ -112,3 +112,4 @@ richnessplot <- function(x, y) {
       )
     )
 }
+
