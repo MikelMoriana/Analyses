@@ -6,7 +6,7 @@ library(pipebind)
 library(ggpubr)
 library(lme4)
 
-community_clean <- targets::tar_read(community_clean)
+community_clean <- read.delim("data/INCLINE_community_subplot_fixed.csv", sep = ",")
 community_4years <- community_clean |> filter(year != 2022) # In 2022 only the center subplots were studied
 
 # We remove the columns we are not interested in, and make it wide format
@@ -29,7 +29,7 @@ community_4years_richness <- community_4years_presence |>
   rename(richness = richness_4years) |> 
   relocate(richness, .after = subPlot)
 
-grid <- make_grid(ncol = 7, nrow = 5) # We create the 5x7 grid for the turfmapper
+grid <- turfmapper::make_grid(ncol = 7, nrow = 5) # We create the 5x7 grid for the turfmapper
 
 # We look at the two blocks where all 6 plots were kept (across all study sites)----
 
@@ -76,7 +76,7 @@ richness_ggplot <- richness_summary |>
   labs(x = "Warming", y = "Average richness, including transplants") +
   guides(fill = guide_legend(title = "Transplant treatment"))
 
-richness_model <- lmer(log(richness) ~ site + warming + treatment + year + (plotID|subPlot), 
+richness_model <- glmer(log(richness) ~ site + warming + treatment + year + (plotID|subPlot), 
                        data = community_4years_richness)
 
 # Looking at richness if we don't consider the introduced species
