@@ -34,5 +34,8 @@ ulvehaugen_4years <- community_4years_richness |> filter(site == "Ulvehaugen")
 
 # Gudmedalen----
 
-richness_gudmedalen_model <- lmer(log(richness) ~ site + warming + treatment + year + (plotID|subPlot), 
-                       data = gudmedalen_4years)
+#richness_gudmedalen_model <- glmer(log(richness) ~ warming + treatment + year + (plotID|subPlot), 
+#                       data = gudmedalen_4years)
+#saveRDS(richness_gudmedalen_model, "data/richness_gudmedalen_model.rda")
+readRDS("data/richness_gudmedalen_model.rda")
+summary(richness_gudmedalen_model)

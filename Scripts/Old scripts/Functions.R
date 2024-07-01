@@ -1,3 +1,51 @@
+# We adjust the make_turf_function from turfmapper to not include cover
+make_turf_plot <- function(data, grid_long, year, subPlot, species, title) {
+  data <- rename(data,
+                 subPlot = {{ subPlot }},
+                 species = {{ species }},
+                 year = {{ year }}
+  )
+  stopifnot(all(data$subPlot %in% grid_long$subPlot))
+  data <- left_join(data, grid_long, by = "subPlot")
+  ggplot(data, aes(x = .data$.x, y = .data$.y)) +
+    geom_tile(colour = "grey60") +
+    facet_grid(species ~ year) +
+    ggtitle(title) +
+    scale_x_continuous(expand = c(0, 0)) +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_fill_brewer(palette = "Paired") +
+    theme_bw() +
+    theme(
+      axis.text = element_blank(),
+      axis.title = element_blank(),
+      axis.ticks = element_blank(),
+      panel.spacing.y = unit(0.04, "lines"),
+      panel.grid.minor = element_blank(),
+      strip.text.y = element_text(angle = 0)
+    )
+}
+
+turfplot <- function(x, y) {
+  x |>
+    filter(plotID == y) |>
+    pipebind::bind(
+      x,
+      make_turf_plot(
+        data = x,
+        grid_long = grid,
+        year = year, species = species, subPlot = subPlot, 
+        title = glue::glue("Site {x$site}: plot {x$plotID}")
+      )
+    )
+}
+
+
+
+
+
+
+
+
 # Find the subplots with wrong number
 find_subplot_species <- function(x, y, z) {
   x |>
@@ -112,4 +160,3 @@ richnessplot <- function(x, y) {
       )
     )
 }
-
