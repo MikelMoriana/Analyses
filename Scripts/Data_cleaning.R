@@ -285,7 +285,7 @@ community_long_cover <- community_long_species |>
 
 # B. Wrong values entered for species cover (containing characters different from 0-9, or only 0)
 
-# C. Wrong values entered for vegetation cover, vegetation height or moss depth. They were next to each other, easy to write them in the wrong column
+# C. Wrong values entered for vegetation cover, vegetation height or moss depth. They were next to each other, easy to write them in the wrong column. When moss depth was absent we write 0, so that we can compare averages between years and plots
 
 # D. Species written in the wrong subplot. This is checked for subplots 9, 11, 13, 23, 25 and 27. In 2022 species present in the plot, but not in the recorded subplots, were written in subplot 9. We don't count them if they have the correct value (O instead of 1). The rest are typos, or other types of mistakes
 
@@ -445,7 +445,7 @@ find_errors_unknowns(community_long_cover, "Gud_1_2")
 # Species value. 2021 Geu_riv 30 is 1D, not 1D1 (found afterwards, not with this function)
 check_vegetation_cover_height_moss_depth(community_long_cover, 2021, "Gud_1_2")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_1_2")
-# Moss depth. No moss in 2021 or 2022
+# Moss depth. No moss in 2021 or 2022, we change it to 0 (logger covered 100 of subplot 12 in 2021, so that subplot is not in the dataset)
 # Subplot number. Des_ces 2019, 23. Error, we remove it
 turfplot(community_long_cover, "Gud_1_2")
 # Car_sp. Seems it is Car_vag in 2018. In the other cases either the other species were already present in the subplot, or none appear any year, and then better to drop them
@@ -454,6 +454,7 @@ turfplot(community_long_cover, "Gud_1_2")
 community_gud_1_2 <- community_long_cover |> 
   mutate(value = ifelse(year == 2019 & plotID == "Gud_1_2" & subPlot == 35 & species == "Car_vag", "1f", value)) |> 
   mutate(value = ifelse(year == 2021 & plotID == "Gud_1_2" & subPlot == 30 & species == "Geu_riv", "1D", value)) |> 
+  mutate(moss_depth_mm = ifelse(year %in% c(2021, 2022) & plotID == "Gud_1_2" & subPlot %in% c(10, 12, 24, 26), 0, moss_depth_mm)) |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Gud_1_2" & species == "Car_vag", "3", cover)) |> 
   filter(!(year == 2019 & plotID == "Gud_1_2" & subPlot == 23)) |> 
   mutate(species = ifelse(year == 2018 & plotID == "Gud_1_2" & species == "Car_sp", "Car_vag", species), 
@@ -2742,6 +2743,8 @@ find_errors_unknowns(community_skj_2_6, "Skj_2_6")
 # Skj_3_1
 find_errors_unknowns(community_lavisdalen, "Skj_3_1")
 # Species cover. 2023 Cam_rot not recorded, we use the value from the previous year
+check_vegetation_cover_height_moss_depth(community_lavisdalen, 2018, "Skj_3_1")
+# Vegetation height and moss depth mixed up, we fix it
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2022, "Skj_3_1")
 # Moss depth. No moss in the missing subplot
 # Subplot number. Vio_pal. It's subplot 14, not 13
@@ -2755,6 +2758,14 @@ turfplot(community_lavisdalen, "Skj_3_1")
 
 community_skj_3_1 <- community_skj_2_6 |> 
   mutate(cover = ifelse(year == 2023 & plotID == "Skj_3_1" & species == "Cam_rot", 1, cover)) |> 
+  mutate(vegetation_height_mm = ifelse(year == 2018 & plotID == "Skj_3_1" & subPlot == 10, 65, vegetation_height_mm), 
+         vegetation_height_mm = ifelse(year == 2018 & plotID == "Skj_3_1" & subPlot == 12, 58, vegetation_height_mm), 
+         vegetation_height_mm = ifelse(year == 2018 & plotID == "Skj_3_1" & subPlot == 24, 35, vegetation_height_mm), 
+         vegetation_height_mm = ifelse(year == 2018 & plotID == "Skj_3_1" & subPlot == 26, 58, vegetation_height_mm), 
+         moss_depth_mm = ifelse(year == 2018 & plotID == "Skj_3_1" & subPlot == 10, 18, moss_depth_mm), 
+         moss_depth_mm = ifelse(year == 2018 & plotID == "Skj_3_1" & subPlot == 12, 18, moss_depth_mm), 
+         moss_depth_mm = ifelse(year == 2018 & plotID == "Skj_3_1" & subPlot == 24, 9, moss_depth_mm), 
+         moss_depth_mm = ifelse(year == 2018 & plotID == "Skj_3_1" & subPlot == 26, 8, moss_depth_mm)) |> 
   mutate(subPlot = ifelse(year == 2019 & plotID == "Skj_3_1" & subPlot == 13, 14, subPlot), 
          moss = ifelse(year == 2019 & plotID == "Skj_3_1" & subPlot == 14, 70, moss), 
          litter = ifelse(year == 2019 & plotID == "Skj_3_1" & subPlot == 14, 5, litter), 
@@ -3329,6 +3340,8 @@ find_errors_unknowns(community_skj_6_6, "Skj_6_6")
 
 # Skj_7_1
 find_errors_unknowns(community_lavisdalen, "Skj_7_1")
+check_vegetation_cover_height_moss_depth(community_lavisdalen, 2018, "Skj_7_1")
+# Vegetation height and moss depth mixed up, we fix it
 # Subplot number. 2018 Alc_alp 23 is wrong, we remove it
 # Subplot number. 2019 Sib_pro also counted in those subplots, but for another study. We remove it
 turfplot(community_lavisdalen, "Skj_7_1")
@@ -3340,6 +3353,14 @@ turfplot(community_lavisdalen, "Skj_7_1")
 # Car_lep is Car_big
 
 community_skj_7_1 <- community_skj_6_6 |> 
+  mutate(vegetation_height_mm = ifelse(year == 2018 & plotID == "Skj_7_1" & subPlot == 10, 32, vegetation_height_mm), 
+         vegetation_height_mm = ifelse(year == 2018 & plotID == "Skj_7_1" & subPlot == 12, 33, vegetation_height_mm), 
+         vegetation_height_mm = ifelse(year == 2018 & plotID == "Skj_7_1" & subPlot == 24, 27, vegetation_height_mm), 
+         vegetation_height_mm = ifelse(year == 2018 & plotID == "Skj_7_1" & subPlot == 26, 39, vegetation_height_mm), 
+         moss_depth_mm = ifelse(year == 2018 & plotID == "Skj_7_1" & subPlot == 10, 16, moss_depth_mm), 
+         moss_depth_mm = ifelse(year == 2018 & plotID == "Skj_7_1" & subPlot == 12, 14, moss_depth_mm), 
+         moss_depth_mm = ifelse(year == 2018 & plotID == "Skj_7_1" & subPlot == 24, 11, moss_depth_mm), 
+         moss_depth_mm = ifelse(year == 2018 & plotID == "Skj_7_1" & subPlot == 26, 9, moss_depth_mm)) |> 
   filter(!(year == 2018 & plotID == "Skj_7_1" & subPlot == 23)) |> 
   filter(!(year == 2019 & plotID == "Skj_7_1" & subPlot %in% c(9, 11, 13, 23, 25, 27))) |> 
   mutate(value = ifelse(year == 2019 & plotID == "Skj_7_1" & species == "Car_vag" & subPlot == 21, 1, value)) |> 
