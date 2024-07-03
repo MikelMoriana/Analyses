@@ -454,7 +454,8 @@ turfplot(community_long_cover, "Gud_1_2")
 community_gud_1_2 <- community_long_cover |> 
   mutate(value = ifelse(year == 2019 & plotID == "Gud_1_2" & subPlot == 35 & species == "Car_vag", "1f", value)) |> 
   mutate(value = ifelse(year == 2021 & plotID == "Gud_1_2" & subPlot == 30 & species == "Geu_riv", "1D", value)) |> 
-  mutate(moss_depth_mm = ifelse(year %in% c(2021, 2022) & plotID == "Gud_1_2" & subPlot %in% c(10, 12, 24, 26), 0, moss_depth_mm)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2021 & plotID == "Gud_1_2" & subPlot %in% c(10, 24, 26), 0, moss_depth_mm), 
+         moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_1_2" & subPlot %in% c(10, 12, 24, 26), 0, moss_depth_mm)) |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Gud_1_2" & species == "Car_vag", "3", cover)) |> 
   filter(!(year == 2019 & plotID == "Gud_1_2" & subPlot == 23)) |> 
   mutate(species = ifelse(year == 2018 & plotID == "Gud_1_2" & species == "Car_sp", "Car_vag", species), 
@@ -471,7 +472,7 @@ find_errors_unknowns(community_long_cover, "Gud_1_3")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2021, "Gud_1_3")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_1_3")
 # Vegetation height. Not recorded in 2021
-# Moss depth. No moss in those subplots and years
+# Moss depth. No moss in those subplots and years, we change it to 0
 # Subplot number. Pot_ere 2019, 27. Error, it is subplot 26
 # Subplot number. Species in 2022: 9. In the plot, but not subplot. We keep them
 turfplot(community_long_cover, "Gud_1_3")
@@ -481,6 +482,8 @@ turfplot(community_long_cover, "Gud_1_3")
 community_gud_1_3 <- community_gud_1_2 |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Gud_1_3" & species == "Tha_alp", 1, cover)) |> 
   mutate(cover = ifelse(year == 2023 & plotID == "Gud_1_3" & species == "Des_ces", 5, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2021 & plotID == "Gud_1_3" & subPlot %in% c(10, 12), 0, moss_depth_mm), 
+         moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_1_3" & subPlot %in% c(10, 12, 24, 26), 0, moss_depth_mm)) |> 
   mutate(subPlot = ifelse(year == 2019 & plotID == "Gud_1_3" & subPlot == 27, 26, subPlot), 
          moss = ifelse(year == 2019 & plotID == "Gud_1_3" & subPlot == 26, 1, moss), 
          litter = ifelse(year == 2019 & plotID == "Gud_1_3" & subPlot == 26, 40, litter), 
@@ -610,12 +613,13 @@ find_errors_unknowns(community_gud_1_6, "Gud_1_6")
 # Gud_2_1
 find_errors_unknowns(community_long_cover, "Gud_2_1")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_2_1")
-# Vegetation cover not typed in. Moss is present only in subplot 24
+# Vegetation cover not typed in. Moss is present only in subplot 24. For absent, we change it to 0
 turfplot(community_long_cover, "Gud_2_1")
 # Car_sp. Seems it is Car_big in all cases. Subplot1 must be removed (Car_big fertile in that subplot). No need to adjust cover
 
 community_gud_2_1 <- community_gud_1_6 |> 
   mutate(vegetation_cover = ifelse(year == 2022 & plotID == "Gud_2_1", 100, vegetation_cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_2_1" & subPlot %in% c(10, 12, 26), 0, moss_depth_mm)) |> 
   filter(!(plotID == "Gud_2_1" & subPlot == 1 & species == "Car_sp")) |> 
   mutate(species = ifelse(plotID == "Gud_2_1"& species == "Car_sp", "Car_big", species), 
          cover = ifelse(year == 2019 & plotID == "Gud_2_1"& species == "Car_big", 10, cover)) |> 
@@ -630,9 +634,10 @@ find_errors_unknowns(community_long_cover, "Gud_2_2")
 # Species cover. Luz_mul, cover is 1
 # Species cover. Ran_acr (and later Ran_acr_cf). The scans says Rum_ace. But neither of the species grow in this block. I remove it
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_2_2")
-# Vegetation height and moss depth. Logger in subplot 10, no moss in the missing subplots
+# Vegetation height and moss depth. Logger in subplot 10, no moss in the missing subplots, we change it to 0
 # Subplot number. Alc_alp: 20 for 23. 
 # Subplot number. Ave_fle: 24 for 23, 19 for 22
+# Subplot number. Nar_str: 10 is 12
 turfplot(community_long_cover, "Gud_2_2")
 # Value cf, Car_fla. It is Car_vag, already present in the subplot. We remove it
 # Car_sp. Seems it is Car_big in all cases. Car_sp in subplot17 2022 is cf, we remove it. Car_big in subplot34 2023 is D, we remove the Car_sp. No need to change the covers
@@ -645,6 +650,7 @@ community_gud_2_2 <- community_gud_2_1 |>
   mutate(cover = ifelse(year == 2019 & plotID == "Gud_2_2" & species == "Luz_mul", 1, cover)) |> 
   filter(!(plotID == "Gud_2_2" & species == "Ran_acr")) |> 
   filter(!(plotID == "Gud_2_2" & species == "Ran_acr_cf")) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_2_2" & subPlot %in% c(12, 26), 0, moss_depth_mm)) |> 
   mutate(subPlot = ifelse(year == 2021 & plotID == "Gud_2_2" & subPlot == 23 & species == "Alc_alp", 20, subPlot), 
          moss = ifelse(year == 2021 & plotID == "Gud_2_2" & subPlot == 20, NA, moss), 
          litter = ifelse(year == 2021 & plotID == "Gud_2_2" & subPlot == 20, 70, litter)) |> 
@@ -656,6 +662,10 @@ community_gud_2_2 <- community_gud_2_1 |>
          litter = ifelse(year == 2021 & plotID == "Gud_2_2" & subPlot == 24, 60, litter), 
          vegetation_height_mm = ifelse(year == 2021 & plotID == "Gud_2_2" & subPlot == 24, 75, vegetation_height_mm), 
          moss_depth_mm = ifelse(year == 2021 & plotID == "Gud_2_2" & subPlot == 24, 13, moss_depth_mm)) |> 
+  mutate(subPlot = ifelse(year == 2022 & plotID == "Gud_2_2" & subPlot == 10 & species == "Nar_str", 12, subPlot), 
+         litter = ifelse(year == 2022 & plotID == "Gud_2_2" & subPlot == 12, 20, litter), 
+         vegetation_height_mm = ifelse(year == 2022 & plotID == "Gud_2_2" & subPlot == 12, 110, vegetation_height_mm), 
+         moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_2_2" & subPlot == 12, 0, moss_depth_mm)) |> 
   filter(!(year == 2022 & plotID == "Gud_2_2" & subPlot == 26 & species == "Car_fla")) |> 
   filter(!(year == 2022 & plotID == "Gud_2_2" & subPlot == 17 & species == "Car_sp")) |> 
   filter(!(year == 2023 & plotID == "Gud_2_2" & subPlot == 34 & species == "Car_sp")) |> 
@@ -675,13 +685,14 @@ find_errors_unknowns(community_gud_2_2, "Gud_2_2")
 find_errors_unknowns(community_long_cover, "Gud_2_3")
 # Species value. 2023 Bis_viv says 11 (found out later, not with this function), when it should be 1
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_2_3")
-# No moss in the missing subplots
+# No moss in the missing subplots, we change it to 0
 turfplot(community_long_cover, "Gud_2_3")
 # Vio_tri_cf is Vio_tri
 # Car_sp. Seems it is Car_big in all cases, we change cover to 4
 
 community_gud_2_3 <- community_gud_2_2 |> 
   mutate(value = ifelse(year == 2023 & plotID == "Gud_2_3" & subPlot == 7 & species == "Bis_viv", 1, value)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_2_3" & subPlot %in% c(10, 12, 24), 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Gud_2_3" & species == "Vio_tri_cf", "Vio_tri", species)) |> 
   mutate(species = ifelse(plotID == "Gud_2_3" & species == "Car_sp", "Car_big", species), 
          cover = ifelse(year == 2021 & plotID == "Gud_2_3" & species == "Car_big", 4, cover)) |> 
@@ -696,13 +707,14 @@ find_errors_unknowns(community_long_cover, "Gud_2_4")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2021, "Gud_2_4")
 # Vegetation height and moss depth measured in subplot 31, since logger was in 24
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_2_4")
-# Moss depth. Not typed in
+# Moss depth. Not typed in. One subplot without, we change it to 0
 turfplot(community_long_cover, "Gud_2_4")
 # Ver_ser_cf is Ver_alp, we change cover to 5
 # Car_sp. Seems it is Car_big in all cases
 
 community_gud_2_4 <- community_gud_2_3 |> 
-  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_2_4" & subPlot == 12, 26, moss_depth_mm), 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_2_4" & subPlot == 10, 0, moss_depth_mm), 
+         moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_2_4" & subPlot == 12, 26, moss_depth_mm), 
          moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_2_4" & subPlot == 24, 3, moss_depth_mm), 
          moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_2_4" & subPlot == 26, 3, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Gud_2_4" & species == "Ver_ser_cf", "Ver_alp", species), 
@@ -719,7 +731,7 @@ find_errors_unknowns(community_gud_2_4, "Gud_2_4")
 find_errors_unknowns(community_long_cover, "Gud_3_2")
 # Species cover. Cam_rot cover written in subplot 35
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_3_2")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 turfplot(community_long_cover, "Gud_3_2")
 # Value cf. Both are Ver_alp
 # Car_big_cf is Car_big
@@ -728,6 +740,7 @@ turfplot(community_long_cover, "Gud_3_2")
 community_gud_3_2 <- community_gud_2_4 |> 
   filter(!(year == 2021 & plotID == "Gud_3_2" & subPlot == 35 & species == "Cam_rot")) |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Gud_3_2" & species == "Cam_rot", 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_3_2" & subPlot %in% c(12, 24, 26), 0, moss_depth_mm)) |> 
   mutate(value = ifelse(year == 2019 & plotID == "Gud_3_2" & subPlot %in% c(4, 15) & species == "Ver_alp", "j", value)) |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Gud_3_2" & species == "Ver_alp", 2, cover)) |> 
   mutate(species = ifelse(plotID == "Gud_3_2" & species == "Car_big_cf", "Car_big", species), 
@@ -746,7 +759,7 @@ find_errors_unknowns(community_gud_3_2, "Gud_3_2")
 find_errors_unknowns(community_long_cover, "Gud_3_3")
 # Species cover. Ver_alp was crossed out. But it said 3, which fits with values from other years
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_3_3")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 turfplot(community_long_cover, "Gud_3_3")
 # Value cf. Car_vag is correct
 # Value cf. Ran_acr is correct
@@ -756,6 +769,7 @@ turfplot(community_long_cover, "Gud_3_3")
 
 community_gud_3_3 <- community_gud_3_2 |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Gud_3_3" & species == "Ver_alp", 3, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_3_3" & subPlot %in% c(10, 24), 0, moss_depth_mm)) |> 
   mutate(value = ifelse(year == 2019 & plotID == "Gud_3_3" & subPlot == 8 & species == "Car_vag", 1, value)) |> 
   mutate(value = ifelse(year == 2019 & plotID == "Gud_3_3" & subPlot == 26 & species == "Ran_acr", "s", value)) |> 
   mutate(species = ifelse(plotID == "Gud_3_3" & species == "Car_sp", "Car_big", species), 
@@ -774,7 +788,7 @@ find_errors_unknowns(community_long_cover, "Gud_3_5")
 # Species cover. Ave_fle 2019 - Not recorded, we estimate it to be 1
 # Species cover. Car_big 2019 - Not recorded, we estimate it to be 1
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_3_5")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 # Subplot number. Vio_bif:  we remove it
 turfplot(community_long_cover, "Gud_3_5")
 # Hie_sp is Hie_alp
@@ -785,6 +799,7 @@ community_gud_3_5 <- community_gud_3_3 |>
   mutate(value = ifelse(year == 2021 & plotID == "Gud_3_5" & subPlot == 4 & species == "Ver_alp", 1, value)) |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Gud_3_5" & species == "Ave_fle", 1, cover)) |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Gud_3_5" & species == "Car_big", 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_3_5" & subPlot %in% c(12, 24, 26), 0, moss_depth_mm)) |> 
   filter(!(year == 2021 & plotID == "Gud_3_5" & subPlot == 9)) |> 
   mutate(species = ifelse(plotID == "Gud_3_5" & species == "Hie_sp", "Hie_alp", species)) |> 
   mutate(species = ifelse(plotID == "Gud_3_5" & species == "Car_sp", "Car_vag", species)) |> 
@@ -814,7 +829,7 @@ find_errors_unknowns(community_gud_3_6, "Gud_3_6")
 find_errors_unknowns(community_long_cover, "Gud_4_1")
 # Species cover. Ast_alp 2019 - Not recorded, we estimate it to be 1
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_4_1")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0 (I do it after adding the Car_vag from 2021)
 turfplot(community_long_cover, "Gud_4_1")
 # Agr_cap_cf. Written in the wrong column. This is Ach_mil
 # Car_nor_cf. It is Car_big, adjust the cover to 2
@@ -837,6 +852,7 @@ community_gud_4_1 <- community_gud_3_6 |>
   filter(!(plotID == "Gud_4_1" & species == "Car_sp")) |> 
   bind_rows(gud_4_1_2018_car_fla) |> 
   bind_rows(gud_4_1_2022_car_vag) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_4_1" & subPlot %in% c(10, 12, 24, 26), 0, moss_depth_mm)) |> 
   distinct()
 
 find_errors_unknowns(community_gud_4_1, "Gud_4_1")
@@ -846,7 +862,7 @@ find_errors_unknowns(community_gud_4_1, "Gud_4_1")
 find_errors_unknowns(community_long_cover, "Gud_4_3")
 # Species cover. Ast_alp 2021 - Not recorded, we used that from 2019, 3
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_4_3")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 turfplot(community_long_cover, "Gud_4_3")
 # Car_big_cf is Car_big
 # Car_cap_cf seems to be Car_fla
@@ -856,6 +872,7 @@ turfplot(community_long_cover, "Gud_4_3")
 
 community_gud_4_3 <- community_gud_4_1 |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Gud_4_3" & species == "Ast_alp", 3, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_4_3" & subPlot %in% c(12, 24, 26), 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Gud_4_3" & species == "Car_big_cf", "Car_big", species)) |> 
   mutate(species = ifelse(plotID == "Gud_4_3" & species == "Car_cap_cf", "Car_fla", species)) |> 
   mutate(species = ifelse(plotID == "Gud_4_3" & species == "Car_nor_cf","Car_nor", species )) |> 
@@ -869,7 +886,7 @@ find_errors_unknowns(community_gud_4_3, "Gud_4_3")
 find_errors_unknowns(community_long_cover, "Gud_4_4")
 # Species cover. Agr_cap 2019 - Not recorded, we estimate it to be 1
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_4_4")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 # Subplot number. Nar_str: 13 for 12, 17 for 14. Missing 18 - We create it
 turfplot(community_long_cover, "Gud_4_4")
 # Value cf. It is Alc_alp
@@ -883,7 +900,8 @@ gud_4_4_18_2021_nar_str <- community_long_cover |>
          cover = "25")
 
 community_gud_4_4 <- community_gud_4_3 |> 
-  mutate(cover = ifelse(year == 2019 & plotID == "Gud_4_4" & species == "Agr_cap", 1, cover))|> 
+  mutate(cover = ifelse(year == 2019 & plotID == "Gud_4_4" & species == "Agr_cap", 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_4_4" & subPlot %in% c(10, 26), 0, moss_depth_mm)) |> 
   mutate(subPlot = ifelse(year == 2021 & plotID == "Gud_4_4" & subPlot == 13, 12, subPlot), 
          moss = ifelse(year == 2021 & plotID == "Gud_4_4" & subPlot == 12, 5, moss), 
          litter = ifelse(year == 2021 & plotID == "Gud_4_4" & subPlot == 12, 70, litter), 
@@ -908,7 +926,7 @@ find_errors_unknowns(community_long_cover, "Gud_4_6")
 # Species cover. Par_pal - Not typed in, it is 1
 check_vegetation_cover_height_moss_depth(community_long_cover, 2021, "Gud_4_6")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_4_6")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 # Subplot number. Tha_alp: 9 is 10 and 11 is 12
 turfplot(community_long_cover, "Gud_4_6")
 # Value cf. We keep both Cer_fon and Par_pal
@@ -916,6 +934,8 @@ turfplot(community_long_cover, "Gud_4_6")
 
 community_gud_4_6 <- community_gud_4_4 |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Gud_4_6" & species == "Par_pal", 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2021 & plotID == "Gud_4_6" & subPlot %in% c(10, 24), 0, moss_depth_mm), 
+         moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_4_6" & subPlot %in% c(10, 12, 24), 0, moss_depth_mm)) |> 
   mutate(subPlot = ifelse(year == 2023 & plotID == "Gud_4_6" & subPlot == 9 , 10, subPlot), 
          litter = ifelse(year == 2023 & plotID == "Gud_4_6" & subPlot == 10, 80, litter), 
          vegetation_height_mm = ifelse(year == 2023 & plotID == "Gud_4_6" & subPlot == 10, 100, vegetation_height_mm), 
@@ -937,7 +957,7 @@ find_errors_unknowns(community_long_cover, "Gud_5_1")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2021, "Gud_5_1")
 # Vegetation height and moss depth measured in subplot 17, since logger in 10
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_5_1")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 turfplot(community_long_cover, "Gud_5_1")
 # Car_sp. Seems it is Car_cap
 # Sal_sp. Seems it is Sal_lan
@@ -946,6 +966,7 @@ turfplot(community_long_cover, "Gud_5_1")
 # Seems Car_sax has been mistaken for Car_atr
 
 community_gud_5_1 <- community_gud_4_6 |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_5_1" & subPlot %in% c(24, 26), 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Gud_5_1" & species == "Car_sp", "Car_cap", species), 
          cover = ifelse(year == 2019 & plotID == "Gud_5_1" & species == "Car_cap", 3, cover)) |> 
   mutate(species = ifelse(plotID == "Gud_5_1" & species == "Sal_sp", "Sal_lan", species)) |> 
@@ -963,7 +984,7 @@ find_errors_unknowns(community_long_cover, "Gud_5_2")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2021, "Gud_5_2")
 # Vegetation height written on vegetation cover, and moss depth on vegetation height
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_5_2")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplotsm, we change it to 0
 # Subplot number. Species were recorded in all subplots. We remove from these subplots
 turfplot(community_long_cover, "Gud_5_2")
 # Car_sp. Car_sax in 2019, not sure in 2018 (we remove it)
@@ -979,6 +1000,7 @@ community_gud_5_2 <- community_gud_5_1 |>
          moss_depth_mm = ifelse(year == 2021 & plotID == "Gud_5_2" & subPlot == 24, 0, moss_depth_mm), 
          vegetation_height_mm = ifelse(year == 2021 & plotID == "Gud_5_2" & subPlot == 26, 160, vegetation_height_mm), 
          moss_depth_mm = ifelse(year == 2021 & plotID == "Gud_5_2" & subPlot == 26, 0, moss_depth_mm)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_5_2" & subPlot %in% c(12, 24, 26), 0, moss_depth_mm)) |> 
   filter(!(year == 2021 & plotID == "Gud_5_2" & subPlot %in% c(9, 11, 13, 23, 25, 27))) |> 
   mutate(species = ifelse(year == 2019 & plotID == "Gud_5_2" & species == "Car_sp", "Car_sax", species)) |> 
   filter(!(year == 2018 & plotID == "Gud_5_2" & species == "Car_sp")) |> 
@@ -993,13 +1015,14 @@ find_errors_unknowns(community_gud_5_2, "Gud_5_2")
 # Gud_5_4
 find_errors_unknowns(community_long_cover, "Gud_5_4")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_5_4")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 # Subplot number. Species were recorded in all subplots. We remove from these subplots
 turfplot(community_long_cover, "Gud_5_4")
 # Car_sp. Seems it is Car_big
 # After checking the turfmapper in the field in 2023,  we change Fes_rub for Ave_fle, Leo_aut for Tar_sp and Lyc_alp for Hup_sel
 
 community_gud_5_4 <- community_gud_5_2 |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_5_4" & subPlot %in% c(12, 24, 26), 0, moss_depth_mm)) |> 
   filter(!(year == 2021 & plotID == "Gud_5_4" & subPlot %in% c(9, 11, 13, 23, 25, 27))) |> 
   mutate(species = ifelse(plotID == "Gud_5_4" & species == "Car_sp", "Car_big", species)) |> 
   mutate(species = ifelse(year == 2018 & plotID == "Gud_5_4" & species == "Fes_rub", "Ave_fle", species))|> 
@@ -1015,7 +1038,7 @@ find_errors_unknowns(community_gud_5_4, "Gud_5_4")
 find_errors_unknowns(community_long_cover, "Gud_5_5")
 # Species value. Car_big: 1*. Uncertainty about the species, we look at the turfplot
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_5_5")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_long_cover, "Gud_5_5")
 # Species value. Car_big: 1*. These are Car_fla. No need to adjust Car_big cover
 # Value cf. Par_pal 2019, not really able to tell, but probably something different. Remove it. In 2022 it's wrong, this is Hie_pil
@@ -1026,6 +1049,7 @@ turfplot(community_long_cover, "Gud_5_5")
 # Pot_cra in 2019 is Pot_ere. We change cover to 9
 
 community_gud_5_5 <- community_gud_5_4 |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_5_5" & subPlot == 10, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(year == 2021 & plotID == "Gud_5_5" & subPlot %in% c(6, 14) & species == "Car_big", "Car_fla", species), 
          value = ifelse(year == 2021 & plotID == "Gud_5_5" & subPlot %in% c(6, 14) & species == "Car_fla", 1, value)) |> 
   filter(!(year == 2019 & plotID == "Gud_5_5" & species == "Par_pal")) |> 
@@ -1051,7 +1075,7 @@ find_errors_unknowns(community_long_cover, "Gud_6_1")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2021, "Gud_6_1")
 # Vegetation height written on vegetation cover, and moss depth on vegetation height. Subplot 17 measured instead of 10
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_6_1")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_long_cover, "Gud_6_1")
 # Unknown is Sol_vir. Hil_pil is also Sol_vir
 # In 2018 and 2022 some Vio_pal was confounded with Vio_bif and Vio_can. We fix it. We change cover in 2018 to 4 and in 2022 to 3
@@ -1066,6 +1090,7 @@ community_gud_6_1 <- community_gud_5_5 |>
          moss_depth_mm = ifelse(year == 2021 & plotID == "Gud_6_1" & subPlot == 17, 0, moss_depth_mm), 
          moss_depth_mm = ifelse(year == 2021 & plotID == "Gud_6_1" & subPlot == 24, 0, moss_depth_mm), 
          moss_depth_mm = ifelse(year == 2021 & plotID == "Gud_6_1" & subPlot == 26, 0, moss_depth_mm)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_6_1" & subPlot == 24, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Gud_6_1" & species == "Unknown", "Sol_vir", species)) |> 
   mutate(species = ifelse(plotID == "Gud_6_1" & species == "Hie_pil", "Sol_vir", species)) |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Gud_6_1" & species == "Sol_vir", 1, cover)) |> 
@@ -1082,9 +1107,9 @@ find_errors_unknowns(community_gud_6_1, "Gud_6_1")
 find_errors_unknowns(community_long_cover, "Gud_6_3")
 # Species cover. Sil_aca 2019 - Not recorded, we estimate it to be 1
 check_vegetation_cover_height_moss_depth(community_long_cover, 2021, "Gud_6_3")
-# Vegetation height and moss depth wwere measured in subplot 31, since logger was in 24
+# Vegetation height and moss depth were measured in subplot 31, since logger was in 24
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_6_3")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_long_cover, "Gud_6_3")
 # Car_cap_cf is Car_cap
 # Car_fla_cf, Car_sp, Car_fla. After turfmapper check in 2023, and looking over comments in the field sheets I am calling it all Car_vag.  in 2018, in 2019 and 2021 we change it to 7
@@ -1092,6 +1117,7 @@ turfplot(community_long_cover, "Gud_6_3")
 
 community_gud_6_3 <- community_gud_6_1 |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Gud_6_3" & species =="Sil_aca", 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_6_3" & subPlot == 12, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Gud_6_3" & species == "Car_cap_cf", "Car_cap", species)) |> 
   mutate(value = ifelse(plotID == "Gud_6_3" & species == "Car_fla_CF", 1, value)) |> 
   mutate(species = ifelse(plotID == "Gud_6_3" & species %in% c("Car_fla", "Car_fla_CF", "Car_sp"), "Car_vag", species)) |> 
@@ -1108,7 +1134,7 @@ find_errors_unknowns(community_gud_6_3, "Gud_6_3")
 find_errors_unknowns(community_long_cover, "Gud_6_4")
 # Species cover. Ant_odo 2021 written in subplot 35
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_6_4")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 turfplot(community_long_cover, "Gud_6_4")
 # Ant_sp is Ant_dio
 # Gal_sp. We cannot really tell, we keep it as Gal_sp
@@ -1116,6 +1142,7 @@ turfplot(community_long_cover, "Gud_6_4")
 community_gud_6_4 <- community_gud_6_3 |> 
   filter(!(year == 2021 & plotID == "Gud_6_4" & subPlot == 35 & species == "Ant_odo")) |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Gud_6_4" & species == "Ant_odo", 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_6_4" & subPlot %in% c(12, 24), 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Gud_6_4" & species == "Ant_sp", "Ant_dio", species))
 
 find_errors_unknowns(community_gud_6_4, "Gud_6_4")
@@ -1126,7 +1153,7 @@ find_errors_unknowns(community_long_cover, "Gud_6_6")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2021, "Gud_6_6")
 # Vegetation cover not typed in, it is 90
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_6_6")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 turfplot(community_long_cover, "Gud_6_6")
 # Value cf. Hil_pil is correct
 # Ant_sp is Ant_dio
@@ -1135,6 +1162,7 @@ turfplot(community_long_cover, "Gud_6_6")
 
 community_gud_6_6 <- community_gud_6_4 |> 
   mutate(vegetation_cover = ifelse(year == 2021 & plotID == "Gud_6_6", 90, vegetation_cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_6_6" & subPlot %in% c(10, 12, 24, 26), 0, moss_depth_mm)) |> 
   mutate(value = ifelse(year == 2021 & plotID == "Gud_6_6" & subPlot == 31 & species == "Hie_pil", 1, value))|>
   mutate(species = ifelse(plotID == "Gud_6_6" & species == "Ant_sp", "Ant_dio", species)) |> 
   mutate(species = ifelse(plotID == "Gud_6_6" & species == "Ave_fle", "Fes_rub", species)) |> 
@@ -1148,7 +1176,7 @@ find_errors_unknowns(community_gud_6_6, "Gud_6_6")
 find_errors_unknowns(community_long_cover, "Gud_7_1")
 # Species cover. We equate 0.1 to 1
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_7_1")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 # Subplot number. They're shifted to the right. And we change 7 for 14
 turfplot(community_long_cover, "Gud_7_1")
 # Value cf. Car_pal is correct
@@ -1157,6 +1185,7 @@ turfplot(community_long_cover, "Gud_7_1")
 
 community_gud_7_1 <- community_gud_6_6 |> 
   mutate(cover = ifelse(plotID == "Gud_7_1" & cover == 0.1, 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_7_1" & subPlot %in% c(10, 12, 26), 0, moss_depth_mm)) |> 
   mutate(subPlot = ifelse(year == 2019 & plotID == "Gud_7_1" & subPlot == 9, 8, subPlot), 
          moss = ifelse(year == 2019 & plotID == "Gud_7_1" & subPlot == 8, 15, moss), 
          litter = ifelse(year == 2019 & plotID == "Gud_7_1" & subPlot == 8, 50, litter)) |> 
@@ -1188,7 +1217,7 @@ find_errors_unknowns(community_long_cover, "Gud_7_2")
 # Species value. Car_sp 35, 0.1. This was cover, and there is no Car_sp in this subplot
 # Species cover. Car_vag is 12 (wasn't typed in). For Jun_tri and Eup_wet we equate 0.1 to 1
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_7_2")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_long_cover, "Gud_7_2")
 # Value cf. Ver_cha. The datasheet says Ver_alp J cf. So changed to that
 # Car_big_cf is Car_big
@@ -1200,6 +1229,7 @@ community_gud_7_2 <- community_gud_7_1 |>
   mutate(cover = ifelse(year == 2021 & plotID == "Gud_7_2" & species == "Car_vag", 12, cover)) |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Gud_7_2" & species == "Eup_wet", 1, cover)) |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Gud_7_2" & species == "Jun_tri", 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_7_2" & subPlot == 10, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(year == 2019 & plotID == "Gud_7_2" & species == "Ver_cha", "Ver_alp", species), 
          value = ifelse(year == 2019 & plotID == "Gud_7_2" & subPlot == 7 & species == "Ver_alp", "J", value)) |> 
   mutate(species = ifelse(plotID == "Gud_7_2" & species == "Car_big_cf", "Car_big", species)) |> 
@@ -1217,7 +1247,7 @@ find_errors_unknowns(community_long_cover, "Gud_7_3")
 # Species value. 2019 Cer_fon says 11 (found out later, not with this function), when it should be 1
 # Species cover. We equate 0.1 to 1
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_7_3")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 turfplot(community_long_cover, "Gud_7_3")
 # Value cf. Ast_alp is correct
 # Agr_cap_cf is Agr_cap
@@ -1228,6 +1258,7 @@ turfplot(community_long_cover, "Gud_7_3")
 community_gud_7_3 <- community_gud_7_2 |> 
   mutate(value = ifelse(year == 2019 & plotID == "Gud_7_3" & subPlot == 26 & species == "Cer_fon", 1, value)) |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Gud_7_3" & species %in% c("Ave_fle", "Eup_wet"), 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_7_3" & subPlot %in% c(10, 12, 24, 26), 0, moss_depth_mm)) |> 
   mutate(value = ifelse(year == 2019 & plotID == "Gud_7_3" & subPlot == 16 & species == "Ast_alp", "J", value)) |> 
   mutate(species = ifelse(plotID == "Gud_7_3" & species == "Agr_cap_cf", "Agr_cap", species)) |> 
   mutate(species = ifelse(year == 2018 & plotID == "Gud_7_3" & species == "Car_sp", "Car_big", species), 
@@ -1245,9 +1276,9 @@ find_errors_unknowns(community_long_cover, "Gud_7_4")
 # Species cover. Ran_acr is not present in the plot, I remove it
 # Species cover. Car_vag 2019. Not recorded, we estimate it to be 1
 check_vegetation_cover_height_moss_depth(community_long_cover, 2021, "Gud_7_4")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_7_4")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, no moss in the missing subplot
 turfplot(community_long_cover, "Gud_7_4")
 # Car_fla_CF. It is not Car_fla, but we cannot really decide what it is. I remove it
 # Car_sp is Car_big
@@ -1256,6 +1287,8 @@ turfplot(community_long_cover, "Gud_7_4")
 community_gud_7_4 <- community_gud_7_3 |> 
   filter(!(year == 2018 & plotID == "Gud_7_4" & species == "Ran_acr")) |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Gud_7_4" & species == "Car_vag", 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2021 & plotID == "Gud_7_4" & subPlot %in% c(10, 26), 0, moss_depth_mm)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Gud_7_4" & subPlot == 24, 0, moss_depth_mm)) |> 
   filter(!(plotID == "Gud_7_4" & species == "Car_fla_CF")) |> 
   mutate(species = ifelse(year == 2018 & plotID == "Gud_7_4" & species == "Car_sp", "Car_big", species)) |> 
   filter(!(plotID == "Gud_7_4" & species == "Unknown"))
@@ -1292,7 +1325,7 @@ find_errors_unknowns(community_gud_7_6, "Gud_7_6")
 # 10. We create an object and file only for gudmedalen
 
 community_gudmedalen <- community_gud_7_6 |> arrange(year, plotID, subPlot)
-community_gudmedalen |> filter(site == "Gudmedalen") |> write.csv("Gudmedalen.csv")
+community_gudmedalen |> filter(site == "Gudmedalen") |> write.csv("data_cleaned/Gudmedalen.csv")
 
 
 ## Lavisdalen----
@@ -1307,7 +1340,7 @@ community_gudmedalen |> filter(site == "Lavisdalen") |> select(plotID) |> distin
 find_errors_unknowns(community_gudmedalen, "Lav_1_1")
 # Species cover. Suc_pra 2021. It's cover has been written on Car_pal
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2022, "Lav_1_1")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_gudmedalen, "Lav_1_1")
 # Value cf. Car_pil 2019 and Car_sp 2018 are in the same subplot as an unidentified Carex in 2023, which was guessed to be Car_nor. We use the same here
 # Value cf. Cer_cer 2019 is Cer_cer
@@ -1319,7 +1352,8 @@ turfplot(community_gudmedalen, "Lav_1_1")
 
 community_lav_1_1 <- community_gudmedalen |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Lav_1_1" & species == "Car_pal", 1, cover)) |> 
-  mutate(cover = ifelse(year == 2021 & plotID == "Lav_1_1" & species == "Suc_pra", 7, cover))|> 
+  mutate(cover = ifelse(year == 2021 & plotID == "Lav_1_1" & species == "Suc_pra", 7, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Lav_1_1" & subPlot == 24, 0, moss_depth_mm)) |> 
   mutate(value = ifelse(plotID == "Lav_1_1" & species == "Car_pil", 1, value)) |> 
   mutate(species = ifelse(plotID == "Lav_1_1" & species %in% c("Car_pil", "Car_sp"), "Car_nor", species)) |> 
   mutate(value = ifelse(year == 2019 & plotID == "Lav_1_1" & subPlot == 22 & species == "Cer_cer", "f", value)) |> 
@@ -1431,7 +1465,7 @@ find_errors_unknowns(community_lav_1_4, "Lav_1_4")
 # Lav_1_6
 find_errors_unknowns(community_gudmedalen, "Lav_1_6")
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2022, "Lav_1_6")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_gudmedalen, "Lav_1_6")
 # Value cf. Fes_ovi is correct
 # Agr_cap_cf is Agr_cap
@@ -1440,6 +1474,7 @@ turfplot(community_gudmedalen, "Lav_1_6")
 # Cer_alp is in fact Cer_fon
 
 community_lav_1_6 <- community_lav_1_4 |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Lav_1_6" & subPlot == 10, 0, moss_depth_mm)) |> 
   mutate(value = ifelse(year == 2019 & plotID == "Lav_1_6" & subPlot == 2 & species == "Fes_ovi", 1, value)) |> 
   mutate(species = ifelse(plotID == "Lav_1_6" & species == "Agr_cap_cf", "Agr_cap", species)) |> 
   mutate(species = ifelse(plotID == "Lav_1_6" & species == "Car_nor_cf", "Car_nor", species)) |> 
@@ -1515,10 +1550,10 @@ find_errors_unknowns(community_gudmedalen, "Lav_2_3")
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2021, "Lav_2_3")
 # Vegetation height and moss depth written in the wrong columns
 turfplot(community_gudmedalen, "Lav_2_3")
-# value cf. 2019 Alc_alp is correct
-# value cf. 2019 Ave_fle is correct
-# value cf. 2019 Poa_pra is correct
-# value cf. 2019 Ver_alp is correct
+# Value cf. 2019 Alc_alp is correct
+# Value cf. 2019 Ave_fle is correct
+# Value cf. 2019 Poa_pra is correct
+# Value cf. 2019 Ver_alp is correct
 # Agr_cap_cf is Agr_cap. And Agr_mer as well
 # Car_nor_cf is Car_pal
 # Ran_sp is Ran_pyg. Ran_acr as well
@@ -1573,7 +1608,7 @@ find_errors_unknowns(community_gudmedalen, "Lav_2_5")
 check_species_cover(community_gudmedalen, "Lav_2_5", "Vio_bif")
 # Species cover. 2021 Vio_bif not recorded, we make the average of 2019 and 2023
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2021, "Lav_2_5")
-# Vegetation height and moss depth typed measured in subplot 17, since logger in 10
+# Vegetation height and moss depth measured in subplot 17, since logger in 10
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2023, "Lav_2_5")
 # Vegetation height and moss depth not recorded in 2023
 # Subplot number. They're shifted to the left, and I delete 13
@@ -1685,7 +1720,7 @@ find_errors_unknowns(community_lav_2_5, "Lav_2_5")
 # Lav_2_6
 find_errors_unknowns(community_gudmedalen, "Lav_2_6")
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2022, "Lav_2_6")
-# No moss in the missing subplots
+# No moss in the missing subplots, we change it to 0
 # Subplot number. 2021 Cer_cer 9 is actually 10. And 3 and 4 are also shifted (they're 4 and 5)
 turfplot(community_gudmedalen, "Lav_2_6")
 # Value cf. Ran_acr is correct
@@ -1693,6 +1728,7 @@ turfplot(community_gudmedalen, "Lav_2_6")
 # Vac_myr is wrong, it was probably small shoots of Sal_her. We correct the cover (it was wrong) and adjust it to 32
 
 community_lav_2_6 <- community_lav_2_5 |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Lav_2_6" & subPlot %in% c(10, 12), 0, moss_depth_mm)) |> 
   mutate(subPlot = ifelse(year == 2021 & plotID == "Lav_2_6" & subPlot == 3 & species == "Cer_cer", 5, subPlot), 
          moss = ifelse(year == 2021 & plotID == "Lav_2_6" & subPlot == 5, 5, moss), 
          litter = ifelse(year == 2021 & plotID == "Lav_2_6" & subPlot == 5, 15, litter)) |> 
@@ -1831,12 +1867,13 @@ find_errors_unknowns(community_lav_3_5, "Lav_3_5")
 # Lav_3_6
 find_errors_unknowns(community_gudmedalen, "Lav_3_6")
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2021, "Lav_3_6")
-# Moss depth. Moss absent in the missing subplot
+# Moss depth. Moss absent in the missing subplot, we change it to 0
 turfplot(community_gudmedalen, "Lav_3_6")
 # Value cf. Car_vag, as well as Car_big, are Car_big is correct
 # Fes_rub_cf_kanskje_Ave_fle was Ave_fle
 
 community_lav_3_6 <- community_lav_3_5 |> 
+  mutate(moss_depth_mm = ifelse(year == 2021 & plotID == "Lav_3_6" & subPlot == 10, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Lav_3_6" & species == "Car_nor_cf", "Car_nor", species)) |> 
   mutate(species = ifelse(plotID == "Lav_3_6" & species == "Car_sp", "Car_big", species), 
          cover = ifelse(year == 2019 & plotID == "Lav_3_6" & species == "Car_big", 5, cover)) |> 
@@ -1892,7 +1929,7 @@ find_errors_unknowns(community_gudmedalen, "Lav_4_3")
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2021, "Lav_4_3")
 # Vegetation height and moss depth recorded in cm, not mm
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2022, "Lav_4_3")
-# Moss depth. Moss absent in the missing subplot
+# Moss depth. Moss absent in the missing subplot, we change it to 0
 turfplot(community_gudmedalen, "Lav_4_3")
 # Car_nor_cf is Car_nor
 # Car_sp. Not enough info to decide, we remove it
@@ -1901,6 +1938,7 @@ turfplot(community_gudmedalen, "Lav_4_3")
 community_lav_4_3 <- community_lav_4_1 |> 
   mutate(vegetation_height_mm = ifelse(year == 2021 & plotID == "Lav_4_3", vegetation_height_mm * 10, vegetation_height_mm), 
          moss_depth_mm = ifelse(year == 2021 & plotID == "Lav_4_3", moss_depth_mm * 10, moss_depth_mm)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Lav_4_3" & subPlot == 26, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Lav_4_3" & species == "Car_nor_cf", "Car_nor", species)) |> 
   filter(!(plotID == "Lav_4_3" & species == "Car_sp")) |> 
   mutate(species = ifelse(plotID == "Lav_4_3" & species == "Cer_alp", "Cer_cer", species)) |> 
@@ -1914,7 +1952,7 @@ find_errors_unknowns(community_gudmedalen, "Lav_4_4")
 # Species cover. Sag_sag not typed in
 # Species cover. Ver_pal not typed in
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2021, "Lav_4_4")
-# Moss depth. Moss absent in the missing subplot
+# Moss depth. Moss absent in the missing subplot, we change it to 0
 turfplot(community_gudmedalen, "Lav_4_4")
 # Car_cap_cf is Car_cap
 # Car_nor_cf is Car_nor
@@ -1923,6 +1961,7 @@ turfplot(community_gudmedalen, "Lav_4_4")
 community_lav_4_4 <- community_lav_4_3 |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Lav_4_4" & species == "Sag_sag", 1, cover)) |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Lav_4_4" & species == "Vio_pal", 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year %in% c(2021, 2022) & plotID == "Lav_4_4" & subPlot == 26, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Lav_4_4" &species == "Car_cap_cf", "Car_cap", species)) |> 
   mutate(species = ifelse(plotID == "Lav_4_4" &species == "Car_nor_cf", "Car_nor", species)) |> 
   mutate(species = ifelse(year == 2022 & plotID == "Lav_4_4" & species == "Car_vag", "Car_nor", species)) |> 
@@ -1935,16 +1974,12 @@ find_errors_unknowns(community_lav_4_4, "Lav_4_4")
 # Lav_4_5
 find_errors_unknowns(community_gudmedalen, "Lav_4_5")
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2021, "Lav_4_5")
-# Vegetation height and moss depth. 2021 subplot 26 written in subplot 33
+# Vegetation height and moss depth. Logger in subplot 26, so measurements taken in 33
 turfplot(community_gudmedalen, "Lav_4_5")
 # In this plot there is a bit of chaos with the Carexes. Since we can't distinguish them consistently throughout the years we call all Car_big
 # Fes_ovi is Fes_rub
 
 community_lav_4_5 <- community_lav_4_4 |> 
-  mutate(vegetation_height_mm = ifelse(year == 2021 & plotID == "Lav_4_5" & subPlot == 26, 40, vegetation_height_mm), 
-         vegetation_height_mm = ifelse(year == 2021 & plotID == "Lav_4_5" & subPlot == 33, NA, vegetation_height_mm), 
-         moss_depth_mm = ifelse(year == 2021 & plotID == "Lav_4_5" & subPlot == 26, 30, moss_depth_mm), 
-         moss_depth_mm = ifelse(year == 2021 & plotID == "Lav_4_5" & subPlot == 33, NA, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Lav_4_5" & species == "Car_big_cf", "Car_big", species), 
          species = ifelse(plotID == "Lav_4_5" & species == "Car_cap_cf", "Car_big", species), 
          species = ifelse(plotID == "Lav_4_5" & species == "Car_cap", "Car_big", species), 
@@ -2124,7 +2159,7 @@ find_errors_unknowns(community_lav_5_5, "Lav_5_5")
 find_errors_unknowns(community_gudmedalen, "Lav_5_6")
 # Species cover. 2023 Sil_aca not recorded, looking at other years we estimate it to be 1
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2022, "Lav_5_6")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_gudmedalen, "Lav_5_6")
 # Agr_cap_cf and Agr_mer are Agr_cap
 # Car_nor_cf, Car_nor and Car_big are Car_vag
@@ -2134,6 +2169,7 @@ turfplot(community_gudmedalen, "Lav_5_6")
 
 community_lav_5_6 <- community_lav_5_5 |> 
   mutate(cover = ifelse(year == 2023 & plotID == "Lav_5_6" & species == "Sil_aca", 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Lav_5_6" & subPlot == 26, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Lav_5_6" & species %in% c("Agr_mer", "Agr_cap_cf"), "Agr_cap", species), 
          cover = ifelse(year == 2021 & plotID == "Lav_5_6" & species == "Agr_cap", 2, cover)) |> 
   mutate(species = ifelse(plotID == "Lav_5_6" & species %in% c("Car_nor", "Car_nor_cf", "Car_big"), "Car_vag", species), 
@@ -2231,7 +2267,7 @@ find_errors_unknowns(community_gudmedalen, "Lav_7_1")
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2021, "Lav_7_1")
 # Vegetation height and moss depth measured in subplot 31, since logger was in 24
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2022, "Lav_7_1")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 # Subplot number. 2021 Sib_pro 9 is actually 8
 turfplot(community_gudmedalen, "Lav_7_1")
 # Ran_acr_cf is Ran_acr
@@ -2244,6 +2280,7 @@ community_lav_7_1 <- community_lav_6_6 |>
          value = ifelse(year == 2022 & plotID == "Lav_7_1" & subPlot== 26 & species == "Fes_viv", "F", value), 
          cover = ifelse(year == 2022 & plotID == "Lav_7_1" & species == "Fes_viv", 2, cover)) |> 
   filter(!(year == 2022 & plotID == "Lav_7_1" & subPlot == 26 & species == "Ver_alp")) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Lav_7_1" & subPlot == 24, 0, moss_depth_mm)) |> 
   mutate(cover = ifelse(year == 2022 & plotID == "Lav_7_1" & species == "Ver_alp", 1, cover)) |> 
   mutate(subPlot = ifelse(year == 2021 & plotID == "Lav_7_1" & subPlot == 9 , 8, subPlot), 
          moss = ifelse(year == 2021 & plotID == "Lav_7_1" & subPlot == 8, 35, moss), 
@@ -2392,11 +2429,11 @@ find_errors_unknowns(community_gudmedalen, "Lav_7_3")
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2019, "Lav_7_3")
 # Vegetation cover, vegetation height and moss depth not typed in 2019
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2021, "Lav_7_3")
-# vegetation height and moss depth. Logger in the missing subplot
+# Vegetation height and moss depth. Logger in subplot 10
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2022, "Lav_7_3")
-# Vegetation height not typed in, moss absent in the missing subplot
+# Vegetation height and moss depth not typed in for subplot 26
 check_vegetation_cover_height_moss_depth(community_gudmedalen, 2023, "Lav_7_3")
-# Moss depth. Moss absent in the missing subplots
+# Moss depth. Moss absent in the missing subplots, we change it to 0
 # Subplot number. Some columns have shifted left: I change 13 to 15 and 16 to 18
 turfplot(community_gudmedalen, "Lav_7_3")
 # Ave_fle and Fes_viv are Fes_ovi
@@ -2476,7 +2513,9 @@ community_lav_7_3 <- community_lav_7_2 |>
          bare_ground = ifelse(year == 2019 & plotID == "Lav_7_3" & subPlot == 12, 5, bare_ground), 
          bare_ground = ifelse(year == 2019 & plotID == "Lav_7_3" & subPlot == 34, 5, bare_ground), 
          rock = ifelse(year == 2019 & plotID == "Lav_7_3" & subPlot == 12, 10, rock)) |> 
-  mutate(vegetation_height_mm = ifelse(year == 2022 & plotID == "Lav_7_3" & subPlot == 26, 60, vegetation_height_mm)) |> 
+  mutate(vegetation_height_mm = ifelse(year == 2022 & plotID == "Lav_7_3" & subPlot == 26, 60, vegetation_height_mm), 
+         moss_depth_mm = ifelse(year == 2022 & plotID == "Lav_7_3" & subPlot == 26, 30, moss_depth_mm)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2023 & plotID == "Lav_7_3" & subPlot %in% c(10, 24), 0, moss_depth_mm)) |> 
   mutate(subPlot = ifelse(year == 2021 & plotID == "Lav_7_3" & subPlot == 13 , 15, subPlot), 
          moss = ifelse(year == 2021 & plotID == "Lav_7_3" & subPlot == 15, 35, moss), 
          litter = ifelse(year == 2021 & plotID == "Lav_7_3" & subPlot == 15, 15, litter)) |> 
@@ -2496,7 +2535,7 @@ find_errors_unknowns(community_lav_7_3, "Lav_7_3")
 # 12. We create an object and file only for lavisdalen
 
 community_lavisdalen <- community_lav_7_3 |> arrange(year, plotID, subPlot)
-community_lavisdalen |> filter(site == "Lavisdalen") |> write.csv("Lavisdalen.csv")
+community_lavisdalen |> filter(site == "Lavisdalen") |> write.csv("data_cleaned/Lavisdalen.csv")
 
 
 ## Skjellingahaugen----
@@ -2578,8 +2617,9 @@ find_errors_unknowns(community_skj_1_3, "Skj_1_3")
 # Skj_1_4
 find_errors_unknowns(community_lavisdalen, "Skj_1_4")
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2021, "Skj_1_4")
-# Vegetation height measured on subplot 31, since logger in 24
-# Moss depth. No moss in the missing subplots
+# Vegetation height and moss depth measured on subplot 31, since logger in 24
+check_vegetation_cover_height_moss_depth(community_lavisdalen, 2022, "Skj_1_4")
+# Moss depth. No moss in the missing subplots, we change it to 0
 turfplot(community_lavisdalen, "Skj_1_4")
 # Value cf. Fes_rub is correct
 # Agr_cap_cf and Agr_mer are Agr_cap
@@ -2590,6 +2630,7 @@ turfplot(community_lavisdalen, "Skj_1_4")
 # Car_fla is Car_vag. Most years it has been called Car_vag, and when it was called Car_fla it says specifically that it could be Car_vag.
 
 community_skj_1_4 <- community_skj_1_3 |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Skj_1_4" & subPlot == 12, 0, moss_depth_mm)) |> 
   mutate(value = ifelse(year == 2022 & plotID == "Skj_1_4" & species == "Fes_rub", 1, value)) |> 
   mutate(species = ifelse(plotID == "Skj_1_4" & species %in% c("Agr_cap_cf","Agr_mer") , "Agr_cap", species)) |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Skj_1_4" & species == "Agr_cap", 25, cover)) |> 
@@ -2605,7 +2646,7 @@ find_errors_unknowns(community_skj_1_4, "Skj_1_4")
 # Skj_1_5
 find_errors_unknowns(community_lavisdalen, "Skj_1_5")
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2022, "Skj_1_5")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 # Subplot number. 2021 Tha_alp has been shifted to the right. 23 is 22, 25 is 24 and 27 is 26
 turfplot(community_lavisdalen, "Skj_1_5")
 # Pot_cra is Pot ere
@@ -2614,6 +2655,7 @@ skj_1_5_2019_agr_mer <- fix_species_before(community_lavisdalen, 2018, "Skj_1_5"
 skj_1_5_2022_agr_mer <- fix_species_before(community_lavisdalen, 2021, "Skj_1_5", "Agr_mer")
 
 community_skj_1_5 <- community_skj_1_4 |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Skj_1_5" & subPlot == 24, 0, moss_depth_mm)) |> 
   mutate(subPlot = ifelse(year == 2021 & plotID == "Skj_1_5" & subPlot == 23, 22, subPlot), 
          moss = ifelse(year == 2021 & plotID == "Skj_1_5" & subPlot == 22, 10, moss), 
          litter = ifelse(year == 2021 & plotID == "Skj_1_5" & subPlot == 22, 20, litter)) |> 
@@ -2627,6 +2669,7 @@ community_skj_1_5 <- community_skj_1_4 |>
          litter = ifelse(year == 2021 & plotID == "Skj_1_5" & subPlot == 26, 10, litter), 
          vegetation_height_mm = ifelse(year == 2021 & plotID == "Skj_1_5" & subPlot == 26, 85, vegetation_height_mm), 
          moss_depth_mm = ifelse(year == 2021 & plotID == "Skj_1_5" & subPlot == 26, 27, moss_depth_mm)) |> 
+  mutate(value = ifelse(year == 2022 & plotID == "Skj_1_5" & subPlot == 9 & species == "Car_cap", "OF", value)) |> 
   mutate(species = ifelse(year == 2022 & plotID == "Skj_1_5" & species == "Pot_cra", "Pot_ere", species)) |> 
   bind_rows(skj_1_5_2019_agr_mer) |> 
   bind_rows(skj_1_5_2022_agr_mer) |> 
@@ -2689,7 +2732,7 @@ find_errors_unknowns(community_skj_2_2, "Skj_2_2")
 # Skj_2_5
 find_errors_unknowns(community_lavisdalen, "Skj_2_5")
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2021, "Skj_2_5")
-# Vegetation height and moss depth written in subplot 16 instead of 10
+# Vegetation height and moss depth. Logger in subplot 10, registered in 16 instead
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2023, "Skj_2_5")
 # Moss depth. No moss in the missing subplot
 turfplot(community_lavisdalen, "Skj_2_5")
@@ -2700,10 +2743,7 @@ turfplot(community_lavisdalen, "Skj_2_5")
 # Hie_sp. There is Hie_pil in the block next to it
 
 community_skj_2_5 <- community_skj_2_2 |> 
-  mutate(vegetation_height_mm = ifelse(year == 2021 & plotID == "Skj_2_5" & subPlot == 10, 75, vegetation_height_mm), 
-         vegetation_height_mm = ifelse(year == 2021 & plotID == "Skj_2_5" & subPlot == 16, NA, vegetation_height_mm), 
-         moss_depth_mm = ifelse(year == 2021 & plotID == "Skj_2_5" & subPlot == 10, 16, moss_depth_mm), 
-         moss_depth_mm = ifelse(year == 2021 & plotID == "Skj_2_5" & subPlot == 16, NA, moss_depth_mm)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2023 & plotID == "Skj_2_5" & subPlot == 12, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Skj_2_5" & species == "Alc_sp_cf", "Alc_sp", species)) |> 
   mutate(species = ifelse(plotID == "Skj_2_5" & species == "Cer_cer_cf", "Cer_cer", species)) |> 
   mutate(species = ifelse(plotID == "Skj_2_5" & species %in% c("Epi_ana_cf", "Epi_sp"), "Epi_ana", species)) |> 
@@ -2746,7 +2786,7 @@ find_errors_unknowns(community_lavisdalen, "Skj_3_1")
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2018, "Skj_3_1")
 # Vegetation height and moss depth mixed up, we fix it
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2022, "Skj_3_1")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 # Subplot number. Vio_pal. It's subplot 14, not 13
 turfplot(community_lavisdalen, "Skj_3_1")
 # Car_nig_cf is probably Car_big (the recorder also noted the possibility)
@@ -2766,6 +2806,7 @@ community_skj_3_1 <- community_skj_2_6 |>
          moss_depth_mm = ifelse(year == 2018 & plotID == "Skj_3_1" & subPlot == 12, 18, moss_depth_mm), 
          moss_depth_mm = ifelse(year == 2018 & plotID == "Skj_3_1" & subPlot == 24, 9, moss_depth_mm), 
          moss_depth_mm = ifelse(year == 2018 & plotID == "Skj_3_1" & subPlot == 26, 8, moss_depth_mm)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Skj_3_1" & subPlot == 24, 0, moss_depth_mm)) |> 
   mutate(subPlot = ifelse(year == 2019 & plotID == "Skj_3_1" & subPlot == 13, 14, subPlot), 
          moss = ifelse(year == 2019 & plotID == "Skj_3_1" & subPlot == 14, 70, moss), 
          litter = ifelse(year == 2019 & plotID == "Skj_3_1" & subPlot == 14, 5, litter), 
@@ -2813,6 +2854,8 @@ find_errors_unknowns(community_skj_3_3, "Skj_3_3")
 find_errors_unknowns(community_lavisdalen, "Skj_3_4")
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2021, "Skj_3_4")
 # Vegetation height and moss depth not registered
+check_vegetation_cover_height_moss_depth(community_lavisdalen, 2022, "Skj_3_4")
+# Moss depth. Moss absent in the missing subplot, we change it to 0
 turfplot(community_lavisdalen, "Skj_3_4")
 # Value cf. Bar_alp is correct
 # Epi_sp is probably a juvenile Ver_alp
@@ -2821,6 +2864,7 @@ turfplot(community_lavisdalen, "Skj_3_4")
 # Rum_acl is Rum_ace
 
 community_skj_3_4 <- community_skj_3_3 |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Skj_3_4" & subPlot == 12, 0, moss_depth_mm)) |> 
   mutate(value = ifelse(year == 2021 & plotID =="Skj_3_4" & subPlot == 22 & species == "Bar_alp", 1, value)) |> 
   mutate(species = ifelse(plotID =="Skj_3_4" & species == "Epi_sp", "Ver_alp", species), 
          value = ifelse(year == 2021 & plotID =="Skj_3_4" & subPlot == 1 & species == "Ver_alp", "1J", value), 
@@ -2840,7 +2884,7 @@ find_errors_unknowns(community_lavisdalen, "Skj_3_6")
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2021, "Skj_3_6")
 # Vegetation height and moss depth mixed up, we fix it
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2022, "Skj_3_6")
-# Vegetation cover, vegetation height and moss depth not recorded
+# Vegetation cover, vegetation height and moss depth not recorded. Non-vascular plant cover recorded only in subplot 10, we remove them, since it's not representative for the whole plot (and we don't want the average for the plot to be calculated from only one subplot)
 turfplot(community_lavisdalen, "Skj_3_6")
 # Value cf. Vac_myr was probably Sal_her. And Vac_myr was also recorded in 2022, but not typed in. It was the wrong species though, it was probably Tha_alp
 # Epi_sp is Epi_ana
@@ -2865,6 +2909,9 @@ community_skj_3_6 <- community_skj_3_4 |>
   mutate(species = ifelse(plotID == "Skj_3_6" & species == "Vac_myr", "Sal_her", species), 
          value = ifelse(year == 2021 & plotID == "Skj_3_6" & subPlot == 1 & species == "Sal_her", "J", value), ) |> 
   bind_rows(skj_3_6_2022_tha_alp) |> 
+  mutate(moss = ifelse(year == 2022 & plotID == "Skj_3_6" & subPlot == 10, NA, moss), 
+         litter = ifelse(year == 2022 & plotID == "Skj_3_6" & subPlot == 10, NA, litter), 
+         logger = ifelse(year == 2022 & plotID == "Skj_3_6" & subPlot == 10, NA, logger)) |> 
   mutate(species = ifelse(plotID == "Skj_3_6" & species == "Epi_sp", "Epi_ana", species)) |> 
   mutate(species = ifelse(plotID == "Skj_3_6" & species == "Orchid", "Dac_vir", species)) |> 
   mutate(species = ifelse(plotID == "Skj_3_6" & species == "Car_nor", "Car_big", species), 
@@ -2881,12 +2928,13 @@ find_errors_unknowns(community_skj_3_6, "Skj_3_6")
 # Skj_4_1
 find_errors_unknowns(community_lavisdalen, "Skj_4_1")
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2023, "Skj_4_1")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_lavisdalen, "Skj_4_1")
 # Epi_ana_cf is Epi_ana
 # Sag_sp is Sag_sag
 
 community_skj_4_1 <- community_skj_3_6 |> 
+  mutate(moss_depth_mm = ifelse(year == 2023 & plotID == "Skj_4_1" & subPlot == 10, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Skj_4_1" & species == "Epi_ana_cf", "Epi_ana", species), 
          cover = ifelse(year == 2018 & plotID == "Skj_4_1" & species == "Epi_ana", 1, cover)) |> 
   mutate(species = ifelse(plotID == "Skj_4_1" & species == "Sag_sp", "Sag_sag", species)) |> 
@@ -2952,7 +3000,7 @@ find_errors_unknowns(community_lavisdalen, "Skj_4_4")
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2021, "Skj_4_4")
 # Vegetation cover not typed in. Vegetation height and moss depth measured in subplot 31, since logger in 24
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2022, "Skj_4_4")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_lavisdalen, "Skj_4_4")
 # Car_sp is Car_big
 # Rum_acl is Rum_ace
@@ -2960,6 +3008,7 @@ turfplot(community_lavisdalen, "Skj_4_4")
 community_skj_4_4 <- community_skj_4_3 |> 
   mutate(cover = ifelse(year == 2023 & plotID == "Skj_4_4" & species == "Phl_alp", 1, cover)) |> 
   mutate(vegetation_cover = ifelse(year == 2021 & plotID == "Skj_4_4", 75, vegetation_cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Skj_4_4" & subPlot == 10, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Skj_4_4" & species == "Car_sp", "Car_big", species)) |> 
   mutate(species = ifelse(plotID == "Skj_4_4" & species == "Rum_acl", "Rum_ace", species))
 
@@ -3127,7 +3176,7 @@ find_errors_unknowns(community_skj_5_2, "Skj_5_2")
 # Skj_5_3
 find_errors_unknowns(community_lavisdalen, "Skj_5_3")
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2021, "Skj_5_3")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_lavisdalen, "Skj_5_3")
 # Leo_aut_cf is Leo_aut
 # Car_sp is probably Car_cap
@@ -3137,6 +3186,7 @@ skj_5_3_2019_agr_mer <- fix_species_before(community_lavisdalen, 2018, "Skj_5_3"
 skj_5_3_2022_agr_mer <- fix_species_before(community_lavisdalen, 2021, "Skj_5_3", "Agr_mer")
 
 community_skj_5_3 <- community_skj_5_2 |> 
+  mutate(moss_depth_mm = ifelse(year == 2021 & plotID == "Skj_5_3" & subPlot == 10, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Skj_5_3" & species == "Leo_aut_cf", "Leo_aut", species)) |> 
   mutate(species = ifelse(plotID == "Skj_5_3" & species == "Car_sp", "Car_cap", species), 
          cover = ifelse(year == 2021 & plotID == "Skj_5_3" & species == "Car_cap", 3, cover)) |> 
@@ -3243,7 +3293,7 @@ find_errors_unknowns(community_skj_6_2, "Skj_6_2")
 find_errors_unknowns(community_lavisdalen, "Skj_6_3")
 # Species cover. 2019 Leo_aut is 2 in the scan, but it does not seem right. We change it to 6, as in 2018 and 2021
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2022, "Skj_6_3")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_lavisdalen, "Skj_6_3")
 # Cer_cer_cf is Cer_cer
 # Ant_sp is Ant_dio
@@ -3253,6 +3303,7 @@ turfplot(community_lavisdalen, "Skj_6_3")
 
 community_skj_6_3 <- community_skj_6_2 |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Skj_6_3" & species == "Leo_aut", 6, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Skj_6_3" & subPlot == 26, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Skj_6_3" & species == "Cer_cer_cf", "Cer_cer", species)) |> 
   mutate(species = ifelse(plotID == "Skj_6_3" & species == "Ant_sp", "Ant_dio", species)) |> 
   mutate(species = ifelse(plotID == "Skj_6_3" & species == "Epi_sp", "Epi_ana", species)) |> 
@@ -3271,13 +3322,14 @@ find_errors_unknowns(community_lavisdalen, "Skj_6_4")
 # Species cover. 2023 Oma_sup not registered, we estimate it to be 1 
 # Species cover. 2023 Pyr_sp not registered, we estimate it to be 1
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2022, "Skj_6_4")
-# Moss depth. No moss in the missing subplot
+# Moss depth. No moss in the missing subplot, we change it to 0
 turfplot(community_lavisdalen, "Skj_6_4")
 # Car_big_cf and Car_vag are Car_big (after turfmapper check in 2023)
 # Sel_sp is Sel_sel
 
 community_skj_6_4 <- community_skj_6_3 |> 
   mutate(cover = ifelse(plotID == "Skj_6_4" & species %in% c("Cam_rot", "Car_big", "Oma_sup", "Pyr_sp"), 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Skj_6_4" & subPlot == 12, 0, moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Skj_6_4" & species %in% c("Car_big_cf", "Car_vag"), "Car_big", species), 
          value = ifelse(year == 2021 & plotID == "Skj_6_4" & subPlot == 4 & species == "Car_big", 1, value), 
          cover = ifelse(year == 2019 & plotID == "Skj_6_4" & species == "Car_big", 1, cover), 
@@ -3292,7 +3344,7 @@ find_errors_unknowns(community_skj_6_4, "Skj_6_4")
 find_errors_unknowns(community_lavisdalen, "Skj_6_6")
 # Species cover. 2019 Leo_aut was not recorded, we estimate it to be 3
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2022, "Skj_6_6")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 # Subplot number. Sal_her has been shifted one to the left (9 for 10, 11 for 12, 13 for 14), and is missing in 7. Alc_sp 25 is 24. We remove Oma_sup
 turfplot(community_lavisdalen, "Skj_6_6")
 # Car_vag_CF is Car_vag
@@ -3305,6 +3357,7 @@ skj_6_6_7_2019_sal_her <- community_lavisdalen |>
 
 community_skj_6_6 <- community_skj_6_4 |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Skj_6_6" & species == "Leo_aut", 3, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Skj_6_6" & subPlot %in% c(10, 12, 26), 0, moss_depth_mm)) |> 
   mutate(subPlot = ifelse(year == 2019 & plotID == "Skj_6_6" & subPlot == 9, 10, subPlot), 
          moss = ifelse(year == 2019 & plotID == "Skj_6_6" & subPlot == 10, 25, moss), 
          litter = ifelse(year == 2019 & plotID == "Skj_6_6" & subPlot == 10, 30, litter), 
@@ -3392,12 +3445,13 @@ find_errors_unknowns(community_skj_7_2, "Skj_7_2")
 # Skj_7_5
 find_errors_unknowns(community_lavisdalen, "Skj_7_5")
 check_vegetation_cover_height_moss_depth(community_lavisdalen, 2022, "Skj_7_5")
-# Moss depth. No moss in the missing subplots
+# Moss depth. No moss in the missing subplots, we change it to 0
 # Subplot number. 2019 Sib_pro and Ver_alp also counted in those subplots, but for another study. We remove them
 turfplot(community_lavisdalen, "Skj_7_5")
 # Car_cap is Car_big
 
 community_skj_7_5 <- community_skj_7_2 |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Skj_7_5" & subPlot %in% c(10, 12, 26), 0, moss_depth_mm)) |> 
   filter(!(year == 2019 & plotID == "Skj_7_5" & subPlot %in% c(11, 13, 23, 25, 27))) |> 
   mutate(species = ifelse(plotID == "Skj_7_5" & species == "Car_cap", "Car_big", species)) |> 
   filter(!(plotID == "Skj_7_5" & species == "Nid_seedling"))
@@ -3408,7 +3462,7 @@ find_errors_unknowns(community_skj_7_5, "Skj_7_5")
 # 14. We create an object and file only for Skjellingahaugen
 
 community_skjellingahaugen <- community_skj_7_5 |> arrange(year, plotID, subPlot)
-community_skjellingahaugen |> filter(site == "Skjellingahaugen") |> write.csv("Skjellingahaugen.csv")
+community_skjellingahaugen |> filter(site == "Skjellingahaugen") |> write.csv("data_cleaned/Skjellingahaugen.csv")
 
 
 ## Ulvehaugen----
@@ -3604,7 +3658,7 @@ find_errors_unknowns(community_skjellingahaugen, "Ulv_2_5")
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2021, "Ulv_2_5")
 # Vegetation height and moss depth mixed up. We fix it
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2022, "Ulv_2_5")
-# Vegetation cover not typed in. Moss not present in the missing subplot
+# Vegetation cover not typed in. Moss not present in the missing subplot, we change it to 0
 turfplot(community_skjellingahaugen, "Ulv_2_5")
 # Value cf. Alc_sp is correct
 # Car_cap_cf is Car_cap
@@ -3627,6 +3681,7 @@ community_ulv_2_5 <- community_ulv_2_4 |>
          moss_depth_mm = ifelse(year == 2021 & plotID == "Ulv_2_5" & subPlot == 24, 9, moss_depth_mm), 
          moss_depth_mm = ifelse(year == 2021 & plotID == "Ulv_2_5" & subPlot == 26, 9, moss_depth_mm)) |> 
   mutate(vegetation_cover = ifelse(year == 2022 & plotID == "Ulv_2_5", 75, vegetation_cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Ulv_2_5" & subPlot == 26, 0 , moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Ulv_2_5" & species == "Alc_sp_cf", "Alc_sp", species), 
          value = ifelse(year == 2021 & plotID == "Ulv_2_5" & subPlot %in% c(6, 7) & species == "Alc_sp", 1, value), 
          cover = ifelse(year == 2021 & plotID == "Ulv_2_5" & species =="Alc_sp", 30, cover)) |> 
@@ -3740,7 +3795,9 @@ find_errors_unknowns(community_ulv_3_5, "Ulv_3_5")
 find_errors_unknowns(community_skjellingahaugen, "Ulv_4_1")
 # Species cover. 2019 Poa_alp and Sal_her were not recorded, we estimate them to be 1
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2021, "Ulv_4_1")
-# 2021 Logger in subplot 24, 31 was recorded instead. No moss in the missing subplots
+# 2021 Logger in subplot 24, 31 was recorded instead
+check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2022, "Ulv_4_1")
+# No moss in the missing subplots, we change it to 0
 turfplot(community_skjellingahaugen, "Ulv_4_1")
 # Car_big_cf and Car_sp are Car_big
 # Vio_sp is Vio_bif
@@ -3750,6 +3807,7 @@ turfplot(community_skjellingahaugen, "Ulv_4_1")
 
 community_ulv_4_1 <- community_ulv_3_5 |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Ulv_4_1" & species %in% c("Poa_alp", "Sal_her"), 1, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Ulv_4_1" & subPlot %in% c(10, 12, 24, 26), 0 , moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Ulv_4_1" & species %in% c("Car_big_cf", "Car_sp"), "Car_big", species), 
          cover = ifelse(year == 2019 & plotID == "Ulv_4_1" & species == "Car_big", 4, cover), 
          value = ifelse(year == 2021 & plotID == "Ulv_4_1" & species == "Car_big", 1, value), 
@@ -3770,9 +3828,9 @@ find_errors_unknowns(community_skjellingahaugen, "Ulv_4_3")
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2018, "Ulv_4_3")
 # Vegetation cover not recorded, vegetation height for plot 10 was written as vegetation cover
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2021, "Ulv_4_3")
-# Vegetation cover not typed in. No moss in the missing subplots
+# Vegetation cover not typed in. No moss in the missing subplots, we change it to 0
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2022, "Ulv_4_3")
-# No moss in the missing subplots
+# No moss in the missing subplots, we change it to 0
 turfplot(community_skjellingahaugen, "Ulv_4_3")
 # Car_big_cf and Car_sp are Car_big. In 2021 we estimate the total cover (not realistic that it would be the sum of both)
 # Gen_sp is Gen_ama
@@ -3783,6 +3841,8 @@ community_ulv_4_3 <- community_ulv_4_1 |>
   mutate(vegetation_cover = ifelse(year == 2018 & plotID == "Ulv_4_3", NA, vegetation_cover), 
          vegetation_height_mm = ifelse(year == 2018 & plotID == "Ulv_4_3" & subPlot == 10, 60, vegetation_height_mm)) |> 
   mutate(vegetation_cover = ifelse(year == 2021 & plotID == "Ulv_4_3", 100, vegetation_cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2021 & plotID == "Ulv_4_3" & subPlot %in% c(10, 12), 0 , moss_depth_mm), 
+         moss_depth_mm = ifelse(year == 2022 & plotID == "Ulv_4_3" & subPlot %in% c(10, 12, 24, 26), 0 , moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Ulv_4_3" & species %in% c("Car_big_cf", "Car_sp"), "Car_big", species), 
          cover = ifelse(year == 2018 & plotID == "Ulv_4_3" & species == "Car_big", 17, cover), 
          cover = ifelse(year == 2021 & plotID == "Ulv_4_3" & species == "Car_big", 30, cover)) |> 
@@ -3800,7 +3860,7 @@ find_errors_unknowns(community_skjellingahaugen, "Ulv_4_4")
 # Species cover. 2019 Poa_alp was not recorded, we use cover from the previous year
 # Species cover. 2022 Des_ces was not recorded, we use cover from the previous year
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2022, "Ulv_4_4")
-# Logger in subplot 26, vegetation height not measured. No moss in the missing subplots
+# Logger in subplot 26, vegetation height not measured. No moss in the missing subplots, we change it to 0
 turfplot(community_skjellingahaugen, "Ulv_4_4")
 # Car_pil_cf is Car_pil
 # Sib_pro_cf is Sib_pro
@@ -3810,6 +3870,7 @@ turfplot(community_skjellingahaugen, "Ulv_4_4")
 community_ulv_4_4 <- community_ulv_4_3 |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Ulv_4_4" & species == "Poa_alp", 1, cover)) |> 
   mutate(cover = ifelse(year == 2022 & plotID == "Ulv_4_4" & species == "Des_ces", 8, cover)) |>  
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Ulv_4_4" & subPlot %in% c(10, 12, 24, 26), 0 , moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Ulv_4_4" & species == "Car_pil_cf", "Car_pil", species), 
          value = ifelse(year == 2021 & plotID == "Ulv_4_4" & species == "Car_pil", 1, value), 
          cover = ifelse(year == 2021 & plotID == "Ulv_4_4" & species == "Car_pil", 1, cover)) |> 
@@ -3829,7 +3890,7 @@ find_errors_unknowns(community_skjellingahaugen, "Ulv_5_1")
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2019, "Ulv_5_1")
 # Vegetation height and moss depth not recorded
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2022, "Ulv_5_1")
-# No moss in the missing subplot
+# No moss in the missing subplot, we change it to 0
 turfplot(community_skjellingahaugen, "Ulv_5_1")
 # Value cf. Rum_ace is correct
 # Car_vag_CF is Car_vag
@@ -3841,6 +3902,7 @@ turfplot(community_skjellingahaugen, "Ulv_5_1")
 community_ulv_5_1 <- community_ulv_4_4 |> 
   mutate(cover = ifelse(year == 2019 & plotID == "Ulv_5_1" & species == "Cam_rot", 2, cover)) |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Ulv_5_1" & species == "Tar_sp", 2, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Ulv_5_1" & subPlot == 10, 0 , moss_depth_mm)) |> 
   mutate(value = ifelse(year == 2021 & plotID == "Ulv_5_1" & subPlot %in% c(33, 34) & species == "Rum_ace", "J", value)) |> 
   mutate(species = ifelse(plotID == "Ulv_5_1" & species == "Car_vag_CF", "Car_vag", species), 
          value = ifelse(year == 2021 & plotID == "Ulv_5_1" & subPlot == 15 & species == "Car_vag", 1, value), 
@@ -4054,7 +4116,7 @@ find_errors_unknowns(community_ulv_6_3, "Ulv_6_3")
 # Ulv_6_4
 find_errors_unknowns(community_skjellingahaugen, "Ulv_6_4")
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2022, "Ulv_6_4")
-# No moss in the missing subplots
+# No moss in the missing subplots, we change it to 0
 # Subplot number. 2022 Eup_wet 11 is 10
 turfplot(community_skjellingahaugen, "Ulv_6_4")
 # Alc_sp_cf is Alc_sp
@@ -4065,6 +4127,7 @@ community_ulv_6_4 <- community_ulv_6_3 |>
   mutate(subPlot = ifelse(year == 2022 & plotID == "Ulv_6_4" & subPlot == 11, 10, subPlot), 
          litter = ifelse(year == 2022 & plotID == "Ulv_6_4" & subPlot == 10, 50, litter), 
          vegetation_height_mm = ifelse(year == 2022 & plotID == "Ulv_6_4" & subPlot == 10, 110, vegetation_height_mm)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Ulv_6_4" & subPlot %in% c(10, 12, 24, 26), 0 , moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Ulv_6_4" & species == "Alc_sp_cf", "Alc_sp", species)) |> 
   mutate(species = ifelse(plotID == "Ulv_6_4" & species %in% c("Car_sp_smal", "Car_nor_cf", "Car_sp", "Car_cap"), "Car_big", species), 
          cover = ifelse(year == 2018 & plotID == "Ulv_6_4" & species =="Car_big", 2, cover), 
@@ -4144,7 +4207,7 @@ find_errors_unknowns(community_skjellingahaugen, "Ulv_7_3")
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2019, "Ulv_7_3")
 # Vegetation height and moss depth registered in subplot 31 instead of 24 (because of logger)
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2022, "Ulv_7_3")
-# No moss in the missing subplots
+# No moss in the missing subplots, we change it to 0
 turfplot(community_skjellingahaugen, "Ulv_7_3")
 # Fes_rub_cf_kanskje_Ave_fle and Ave_fle are Fes_rub
 
@@ -4171,6 +4234,7 @@ community_ulv_7_3_cover <- community_ulv_7_2 |>
 community_ulv_7_3 <- community_ulv_7_3_cover |> 
   mutate(species = ifelse(plotID == "Ulv_7_3" & species == "Alc_alp", "Alc_sp", species), 
          cover = ifelse(year == 2018 & plotID == "Ulv_7_3" & species == "Alc_sp", 10, cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Ulv_7_3" & subPlot %in% c(24, 26), 0 , moss_depth_mm)) |> 
   mutate(species = ifelse(plotID == "Ulv_7_3" & species %in% c("Ave_fle", "Fes_rub_cf_kanskje_Ave_fle"), "Fes_rub", species))
 
 find_errors_unknowns(community_ulv_7_3, "Ulv_7_3")
@@ -4205,12 +4269,13 @@ find_errors_unknowns(community_skjellingahaugen, "Ulv_7_6")
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2021, "Ulv_7_6")
 # Vegetation cover not typed in
 check_vegetation_cover_height_moss_depth(community_skjellingahaugen, 2022, "Ulv_7_6")
-# No moss in the missing subplot
+# No moss in the missing subplot, we change it to 0
 turfplot(community_skjellingahaugen, "Ulv_7_6")
 
 community_ulv_7_6 <- community_ulv_7_4 |> 
   mutate(cover = ifelse(year == 2021 & plotID == "Ulv_7_6" & species == "Cer_fon", 1, cover)) |> 
   mutate(vegetation_cover = ifelse(year == 2021 & plotID == "Ulv_7_6", 90, vegetation_cover)) |> 
+  mutate(moss_depth_mm = ifelse(year == 2022 & plotID == "Ulv_7_6" & subPlot == 10, 0 , moss_depth_mm)) |> 
   filter(!(plotID == "Ulv_7_6" & species == "Nid_seedling"))
 
 find_errors_unknowns(community_ulv_7_6, "Ulv_7_6")
@@ -4219,7 +4284,7 @@ find_errors_unknowns(community_ulv_7_6, "Ulv_7_6")
 # 16. We create an object and file only for Ulvehaugen
 
 community_ulvehaugen <- community_ulv_7_6 |> arrange(year, plotID, subPlot)
-community_ulvehaugen |> filter(site == "Ulvehaugen") |> write.csv("Ulvehaugen")
+community_ulvehaugen |> filter(site == "Ulvehaugen") |> write.csv("data_cleaned/Ulvehaugen.csv")
 
 
 ## Adding some few extra columns with information----
