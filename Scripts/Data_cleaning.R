@@ -445,7 +445,7 @@ find_errors_unknowns(community_long_cover, "Gud_1_2")
 # Species value. 2021 Geu_riv 30 is 1D, not 1D1 (found afterwards, not with this function)
 check_vegetation_cover_height_moss_depth(community_long_cover, 2021, "Gud_1_2")
 check_vegetation_cover_height_moss_depth(community_long_cover, 2022, "Gud_1_2")
-# Moss depth. No moss in 2021 or 2022, we change it to 0 (logger covered 100 of subplot 12 in 2021, so that subplot is not in the dataset)
+# Moss depth. No moss in 2021 or 2022, we change it to 0 (logger covered 100% of subplot 12 in 2021, so that subplot is not in the dataset)
 # Subplot number. Des_ces 2019, 23. Error, we remove it
 turfplot(community_long_cover, "Gud_1_2")
 # Car_sp. Seems it is Car_vag in 2018. In the other cases either the other species were already present in the subplot, or none appear any year, and then better to drop them
@@ -3264,6 +3264,7 @@ community_skj_5_6 <- community_skj_5_5 |>
   bind_rows(skj_5_6_2019_agr_mer) |> 
   bind_rows(skj_5_6_2022_agr_mer) |> 
   filter(!(plotID == "Skj_5_6" & species == "Nid_seedling")) |> 
+  mutate(date = if_else(year == 2019 & plotID == "Skj_5_6", as.Date("2019-08-09"), date)) |> 
   distinct()
 
 find_errors_unknowns(community_skj_5_6, "Skj_5_6")
